@@ -21,6 +21,14 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* MyCamera;
 
+	/** How far can the player target comets? */
+	UPROPERTY(EditAnywhere, Category = "Shooting")
+	float TraceDistance = 500;
+
+	/** How long does the player need to gaze at a comet to charge and fire their laser (in ms)? */
+	UPROPERTY(EditAnywhere, Category = "Shooting")
+	float ChargeTime = 1000;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

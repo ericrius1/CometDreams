@@ -52,7 +52,7 @@ void AAstronautPawn::GazeCheck()
 
 
 	auto StartLocation = MyCamera->K2_GetComponentLocation();
-	auto EndLocation = StartLocation + (MyCamera->GetForwardVector() * 500);
+	auto EndLocation = StartLocation + (MyCamera->GetForwardVector() * TraceDistance);
 	if (GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		StartLocation,
@@ -61,7 +61,7 @@ void AAstronautPawn::GazeCheck()
 		CollisionParams)
 		)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HIT!"))
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));
 	}
 
 }
