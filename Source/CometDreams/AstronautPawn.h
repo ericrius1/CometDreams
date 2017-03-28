@@ -2,21 +2,24 @@
 
 #pragma once
 
-#include "GameFramework/Character.h"
-#include "CPP_PlayerCharacter.generated.h"
+#include "GameFramework/Pawn.h"
+#include "AstronautPawn.generated.h"
 
 UCLASS()
-class COMETDREAMS_API ACPP_PlayerCharacter : public ACharacter
+class COMETDREAMS_API AAstronautPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	ACPP_PlayerCharacter();
+	// Sets default values for this pawn's properties
+	AAstronautPawn();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere)
+	UCameraComponent* MyCamera;
 
 public:	
 	// Called every frame
@@ -25,10 +28,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	
+	void GazeCheck();
 
 	void Fire();
-	
+
 	bool bFiring;
-	
-	
+
 };
