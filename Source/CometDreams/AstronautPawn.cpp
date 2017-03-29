@@ -15,6 +15,8 @@ AAstronautPawn::AAstronautPawn() :
 
 	MyCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameCamera"));
 
+	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>(TEXT("LaserCharge"));
+
 
 }
 
@@ -96,8 +98,11 @@ void AAstronautPawn::GazeCheck()
 	{
 		if (HitResult.Actor->Tags.Contains("Comet") && !bLockedOntoComet)
 		{
+			// We've locked onto a new comet!
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We are locked on to a comet!"));
 			bLockedOntoComet = true;
+
+			LaserChargeSound->Play();
 
 			// TIMELINE
 			ChargingTimeline.PlayFromStart();

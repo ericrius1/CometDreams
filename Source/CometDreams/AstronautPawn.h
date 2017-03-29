@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UCurveFloat* ChargeCurve;
 
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		UAudioComponent* LaserChargeSound;
+
 
 public:
 	// Called every frame
