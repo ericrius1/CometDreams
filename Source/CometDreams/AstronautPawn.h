@@ -33,6 +33,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UCurveFloat* ChargeCurve;
 
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -48,7 +49,6 @@ public:
 	bool bFiring;
 
 
-	FTimerHandle ChargeLaserTimerHandler;
 
 private:
 	bool bLockedOntoComet;
@@ -56,8 +56,10 @@ private:
 	FTimeline ChargingTimeline;
 
 	UFUNCTION()
-	void HandleChargingProgress();
+		void HandleChargingProgress(float value);
 
+	UFUNCTION()
+		void HandleChargingFinish();
 
 
 

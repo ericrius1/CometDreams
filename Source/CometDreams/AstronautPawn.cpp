@@ -30,13 +30,22 @@ void AAstronautPawn::BeginPlay()
 		execute every time we tick our timeline. Think of this like a delegate*/
 		FOnTimelineFloat ProgressFunction;
 
+
+		/* Contains the signature of the function that is going to
+		execute when the timeline finishes.*/
+		FOnTimelineEvent FinishFunction;
+
 		/* In order to bind the function to our ufunction we need to create an FName which contains the
 		name of the function we want to call every time the timeline advances*/
 		ProgressFunction.BindUFunction(this, FName("HandleChargingProgress"));
 
-		ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
+		FinishFunction.BindUFunction(this, FName("HandleChargingFinish"));
 
-		ChargingTimeline.PlayFromStart();
+
+		ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
+		ChargingTimeline.SetTimelineLength(ChargeTime);
+
+		ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
 
 
 	}
@@ -88,19 +97,17 @@ void AAstronautPawn::GazeCheck()
 		if (HitResult.Actor->Tags.Contains("Comet") && !bLockedOntoComet)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We are locked on to a comet!"));
-			GetWorld()->GetTimerManager().SetTimer(ChargeLaserTimerHandler, this, &AAstronautPawn::Fire, ChargeTime, false);
 			bLockedOntoComet = true;
 
 			// TIMELINE
-
-		
+			ChargingTimeline.PlayFromStart();
 		}
 	}
-	// If we were locked on and now we're not, clear timer
 	else if (bLockedOntoComet) {
-		GetWorld()->GetTimerManager().ClearTimer(ChargeLaserTimerHandler);
 		bLockedOntoComet = false;
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We lost tracking on target	!"));
+
+		ChargingTimeline.Stop();
 
 	}
 
@@ -114,9 +121,16 @@ void AAstronautPawn::Fire()
 
 }
 
-void AAstronautPawn::HandleChargingProgress()
+void AAstronautPawn::HandleChargingProgress(float value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Charging"));
+	// GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat(value));
 
+
+}
+
+void AAstronautPawn::HandleChargingFinish()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Charging Finished"));
+	Fire();
 }
 
