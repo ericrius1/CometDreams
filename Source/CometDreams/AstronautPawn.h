@@ -43,8 +43,14 @@ public:
 
 	bool bFiring;
 
-	bool bLockedOntoComet;
 
 	FTimerHandle ChargeLaserTimerHandler;
+
+private:
+	bool bLockedOntoComet;
+
+	AActor* CurrentTarget = nullptr;
+
+
 
 };

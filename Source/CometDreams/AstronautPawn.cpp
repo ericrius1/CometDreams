@@ -5,12 +5,12 @@
 
 
 // Sets default values
-AAstronautPawn::AAstronautPawn() : 
+AAstronautPawn::AAstronautPawn() :
 	bLockedOntoComet(false),
 	ChargeTime(2),
 	TraceRangeForGaze(500)
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	MyCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameCamera"));
@@ -22,7 +22,7 @@ AAstronautPawn::AAstronautPawn() :
 void AAstronautPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -46,8 +46,8 @@ void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void AAstronautPawn::GazeCheck()
 {
 	FHitResult HitResult;
-	
-	
+
+
 	const FName TraceTag("MyTraceTag");
 	GetWorld()->DebugDrawTraceTag = TraceTag;
 	FCollisionQueryParams CollisionParams;
@@ -69,8 +69,17 @@ void AAstronautPawn::GazeCheck()
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We are locked on to a comet!"));
 			GetWorld()->GetTimerManager().SetTimer(ChargeLaserTimerHandler, this, &AAstronautPawn::Fire, ChargeTime, false);
 			bLockedOntoComet = true;
+			CurrentTarget = HitResult.Actor.Get();
 		}
 	}
+	// If we werelocked on and now we're not, clear timer
+	else if (bLockedOntoComet) {
+		GetWorld()->GetTimerManager().ClearTimer(ChargeLaserTimerHandler);
+		bLockedOntoComet = false;
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We lost tracking on target	!"));
+
+	}
+
 
 }
 
