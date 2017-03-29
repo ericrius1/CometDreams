@@ -25,7 +25,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float TraceRangeForGaze;
 
-	/** How long does the player need to gaze at a comet to charge and fire their laser (in ms)? */
+	/** How long does the player need to gaze at a comet to charge and fire their laser in seconds? */
 	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float ChargeTime;
 
@@ -43,7 +43,7 @@ public:
 
 	bool bFiring;
 
-	bool bLockedOnToComet;
+	bool bLockedOntoComet;
 
 	FTimerHandle ChargeLaserTimerHandler;
 

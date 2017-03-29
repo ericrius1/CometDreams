@@ -6,8 +6,8 @@
 
 // Sets default values
 AAstronautPawn::AAstronautPawn() : 
-	bLockedOnToComet(false),
-	ChargeTime(1100),
+	bLockedOntoComet(false),
+	ChargeTime(2),
 	TraceRangeForGaze(500)
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -39,7 +39,7 @@ void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	InputComponent->BindAction("Fire", IE_Pressed, this, &AAstronautPawn::Fire);
+	//InputComponent->BindAction("Fire", IE_Pressed, this, &AAstronautPawn::Fire);
 
 }
 
@@ -64,12 +64,11 @@ void AAstronautPawn::GazeCheck()
 		CollisionParams)
 		)
 	{
-		if (HitResult.Actor->Tags.Contains("Comet") && !bLockedOnToComet)
+		if (HitResult.Actor->Tags.Contains("Comet") && !bLockedOntoComet)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We are locked on to a comet!"));
 			GetWorld()->GetTimerManager().SetTimer(ChargeLaserTimerHandler, this, &AAstronautPawn::Fire, ChargeTime, false);
-			bLockedOnToComet = true;
-
+			bLockedOntoComet = true;
 		}
 	}
 
@@ -78,5 +77,6 @@ void AAstronautPawn::GazeCheck()
 void AAstronautPawn::Fire()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Fire Laser!!"));
+	bLockedOntoComet = false;
 }
 
