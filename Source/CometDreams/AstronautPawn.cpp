@@ -21,7 +21,25 @@ AAstronautPawn::AAstronautPawn() :
 // Called when the game starts or when spawned
 void AAstronautPawn::BeginPlay()
 {
-	Super::BeginPlay();
+ 	Super::BeginPlay();
+
+	// Initialize Timeline
+	if (ChargeCurve)
+	{
+		/* Contains the signature of the function that is going to 
+		execute every time we tick our timeline. Think of this like a delegate*/
+		FOnTimelineFloat ProgressFunction;
+
+		/* In order to bind the function to our ufunction we need to create an FName which contains the
+		name of the function we want to call every time the timeline advances*/
+		ProgressFunction.BindUFunction(this, FName("HandleChargingProgress"));
+
+		ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
+
+		ChargingTimeline.PlayFromStart();
+
+
+	}
 
 }
 
@@ -31,6 +49,9 @@ void AAstronautPawn::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	GazeCheck();
+
+	ChargingTimeline.TickTimeline(DeltaTime);
+
 
 }
 
@@ -69,10 +90,13 @@ void AAstronautPawn::GazeCheck()
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We are locked on to a comet!"));
 			GetWorld()->GetTimerManager().SetTimer(ChargeLaserTimerHandler, this, &AAstronautPawn::Fire, ChargeTime, false);
 			bLockedOntoComet = true;
-			CurrentTarget = HitResult.Actor.Get();
+
+			// TIMELINE
+
+		
 		}
 	}
-	// If we werelocked on and now we're not, clear timer
+	// If we were locked on and now we're not, clear timer
 	else if (bLockedOntoComet) {
 		GetWorld()->GetTimerManager().ClearTimer(ChargeLaserTimerHandler);
 		bLockedOntoComet = false;
@@ -85,7 +109,14 @@ void AAstronautPawn::GazeCheck()
 
 void AAstronautPawn::Fire()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Fire Laser!!"));
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Fire Laser!!"));
 	bLockedOntoComet = false;
+
+}
+
+void AAstronautPawn::HandleChargingProgress()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Charging"));
+
 }
 

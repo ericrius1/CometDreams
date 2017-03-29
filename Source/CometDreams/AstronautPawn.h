@@ -19,24 +19,28 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	UCameraComponent* MyCamera;
+		UCameraComponent* MyCamera;
 
 	/** How far can the player target comets? */
-	UPROPERTY(EditAnywhere, Category = "Shooting")
-	float TraceRangeForGaze;
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		float TraceRangeForGaze;
 
 	/** How long does the player need to gaze at a comet to charge and fire their laser in seconds? */
-	UPROPERTY(EditAnywhere, Category = "Shooting")
-	float ChargeTime;
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		float ChargeTime;
 
-public:	
+	/*Curve float reference*/
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		UCurveFloat* ChargeCurve;
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
+
 	void GazeCheck();
 
 	void Fire();
@@ -49,7 +53,10 @@ public:
 private:
 	bool bLockedOntoComet;
 
-	AActor* CurrentTarget = nullptr;
+	FTimeline ChargingTimeline;
+
+	void HandleChargingProgress();
+
 
 
 
