@@ -23,11 +23,11 @@ protected:
 
 	/** How far can the player target comets? */
 	UPROPERTY(EditAnywhere, Category = "Shooting")
-	float TraceDistance = 500;
+	float TraceRangeForGaze;
 
 	/** How long does the player need to gaze at a comet to charge and fire their laser (in ms)? */
 	UPROPERTY(EditAnywhere, Category = "Shooting")
-	float ChargeTime = 1000;
+	float ChargeTime;
 
 public:	
 	// Called every frame
@@ -42,5 +42,9 @@ public:
 	void Fire();
 
 	bool bFiring;
+
+	bool bLockedOnToComet;
+
+	FTimerHandle ChargeLaserTimerHandler;
 
 };

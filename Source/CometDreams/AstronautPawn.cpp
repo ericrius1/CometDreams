@@ -5,7 +5,10 @@
 
 
 // Sets default values
-AAstronautPawn::AAstronautPawn()
+AAstronautPawn::AAstronautPawn() : 
+	bLockedOnToComet(false),
+	ChargeTime(1100),
+	TraceRangeForGaze(500)
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -52,7 +55,7 @@ void AAstronautPawn::GazeCheck()
 
 
 	auto StartLocation = MyCamera->K2_GetComponentLocation();
-	auto EndLocation = StartLocation + (MyCamera->GetForwardVector() * TraceDistance);
+	auto EndLocation = StartLocation + (MyCamera->GetForwardVector() * TraceRangeForGaze);
 	if (GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		StartLocation,
@@ -61,13 +64,19 @@ void AAstronautPawn::GazeCheck()
 		CollisionParams)
 		)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));
+		if (HitResult.Actor->Tags.Contains("Comet") && !bLockedOnToComet)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We are locked on to a comet!"));
+			GetWorld()->GetTimerManager().SetTimer(ChargeLaserTimerHandler, this, &AAstronautPawn::Fire, ChargeTime, false);
+			bLockedOnToComet = true;
+
+		}
 	}
 
 }
 
 void AAstronautPawn::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("FIRE"))
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Fire Laser!!"));
 }
 
