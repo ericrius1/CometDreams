@@ -55,6 +55,7 @@ private:
 
 	FTimeline ChargingTimeline;
 
+	UFUNCTION()
 	void HandleChargingProgress();
 
 
