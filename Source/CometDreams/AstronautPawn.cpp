@@ -17,6 +17,8 @@ AAstronautPawn::AAstronautPawn() :
 
 	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>(TEXT("LaserCharge"));
 
+	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Laser"));
+
 
 }
 

@@ -34,7 +34,10 @@ protected:
 		UCurveFloat* ChargeCurve;
 
 	UPROPERTY(EditAnywhere, Category = "Firing")
-		UAudioComponent* LaserChargeSound;
+		UAudioComponent*  LaserChargeSound;
+
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		UParticleSystemComponent* Laser;
 
 
 public:
