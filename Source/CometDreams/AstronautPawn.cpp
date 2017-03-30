@@ -8,7 +8,8 @@
 AAstronautPawn::AAstronautPawn() :
 	bLockedOntoComet(false),
 	ChargeTime(2),
-	TraceRangeForGaze(500)
+	TraceRangeForGaze(500),
+	DisplayLaserTime(0.5)
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -134,6 +135,8 @@ void AAstronautPawn::Fire()
 
 	Laser->ActivateSystem();
 
+	GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
+
 
 }
 
@@ -148,5 +151,10 @@ void AAstronautPawn::HandleChargingFinish()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Charging Finished"));
 	Fire();
+}
+
+void AAstronautPawn::DeactivateLaser()
+{
+	Laser->DeactivateSystem();
 }
 

@@ -33,6 +33,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		float ChargeTime;
 
+	/* How long does the laser display for before deactivating?*/
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		float DisplayLaserTime;
+
 	/*Curve float reference*/
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UCurveFloat* ChargeCurve;
@@ -70,6 +74,11 @@ private:
 
 	UFUNCTION()
 		void HandleChargingFinish();
+
+	UFUNCTION()
+		void DeactivateLaser();
+
+	FTimerHandle ShowLaserTimerHandler;
 
 
 
