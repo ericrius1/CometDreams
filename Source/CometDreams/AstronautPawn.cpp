@@ -9,7 +9,8 @@ AAstronautPawn::AAstronautPawn() :
 	bLockedOntoComet(false),
 	ChargeTime(2),
 	TraceRangeForGaze(500),
-	DisplayLaserTime(0.5)
+	DisplayLaserTime(0.5),
+	MovementSpeed(1)
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -71,6 +72,8 @@ void AAstronautPawn::Tick(float DeltaTime)
 
 	ChargingTimeline.TickTimeline(DeltaTime);
 
+	MyCamera->AddWorldOffset(FVector(MovementSpeed, 0.0, 0.0));
+
 
 }
 
@@ -101,8 +104,8 @@ void AAstronautPawn::GazeCheck()
 		HitResult,
 		StartLocation,
 		EndLocation,
-		ECollisionChannel::ECC_Visibility,
-		CollisionParams)
+		ECollisionChannel::ECC_Visibility)
+		//CollisionParams)
 		)
 	{
 		if (HitResult.Actor->Tags.Contains("Comet") && !bLockedOntoComet)
