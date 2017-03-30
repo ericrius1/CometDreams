@@ -25,6 +25,9 @@ AAstronautPawn::AAstronautPawn() :
 	Laser = CreateDefaultSubobject<UParticleSystemComponent>( TEXT("Laser Effect"));
 	Laser->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
+	Cursor = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Cursor"));
+	Cursor->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+
 
 
 }

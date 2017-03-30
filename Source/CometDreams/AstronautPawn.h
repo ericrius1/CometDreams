@@ -47,6 +47,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UParticleSystemComponent* Laser;
 
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		UParticleSystemComponent* Cursor;
+
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float MovementSpeed;
 
