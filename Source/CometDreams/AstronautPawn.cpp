@@ -13,11 +13,16 @@ AAstronautPawn::AAstronautPawn() :
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	MyCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameCamera"));
+	RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Scene Component"));
 
-	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>(TEXT("LaserCharge"));
+	MyCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Game Camera"));
 
-	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Laser"));
+	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>( TEXT("Laser Charge Sound"));
+	LaserChargeSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+
+	Laser = CreateDefaultSubobject<UParticleSystemComponent>( TEXT("Laser Effect"));
+	Laser->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+
 
 
 }
