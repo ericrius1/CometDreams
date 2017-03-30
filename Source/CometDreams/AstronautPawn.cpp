@@ -115,6 +115,8 @@ void AAstronautPawn::GazeCheck()
 
 			// TIMELINE
 			ChargingTimeline.PlayFromStart();
+
+			TargetedComet = HitResult.Actor.Get();
 		}
 	}
 	else if (bLockedOntoComet) {
@@ -137,6 +139,7 @@ void AAstronautPawn::Fire()
 
 	GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
 
+	TargetedComet->Destroy();
 
 }
 

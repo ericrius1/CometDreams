@@ -78,6 +78,8 @@ private:
 	UFUNCTION()
 		void DeactivateLaser();
 
+	AActor* TargetedComet = nullptr;
+
 	FTimerHandle ShowLaserTimerHandler;
 
 
