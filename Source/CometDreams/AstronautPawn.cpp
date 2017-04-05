@@ -18,10 +18,10 @@ AAstronautPawn::AAstronautPawn() :
 
 	MyCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Game Camera"));
 
-	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>( TEXT("Laser Charge Sound"));
+	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Charge Sound"));
 	LaserChargeSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
-	Laser = CreateDefaultSubobject<UParticleSystemComponent>( TEXT("Laser Effect"));
+	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Laser Effect"));
 	Laser->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
 	Cursor = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Cursor"));
@@ -34,12 +34,12 @@ AAstronautPawn::AAstronautPawn() :
 // Called when the game starts or when spawned
 void AAstronautPawn::BeginPlay()
 {
- 	Super::BeginPlay();
+	Super::BeginPlay();
 
 	// Initialize Timeline
 	if (ChargeCurve)
 	{
-		/* Contains the signature of the function that is going to 
+		/* Contains the signature of the function that is going to
 		execute every time we tick our timeline. Think of this like a delegate*/
 		FOnTimelineFloat ProgressFunction;
 
@@ -57,6 +57,7 @@ void AAstronautPawn::BeginPlay()
 
 
 		ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
+
 
 		ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
 
@@ -151,6 +152,13 @@ void AAstronautPawn::Fire()
 void AAstronautPawn::HandleChargingProgress(float value)
 {
 	// GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat(value));
+
+	if (CursorColorCurve) {
+		FLinearColor CursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition());
+
+		Cursor->SetColorParameter(FName("CursorColor"), CursorColor);
+	}
+
 
 
 }

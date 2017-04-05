@@ -35,9 +35,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		float DisplayLaserTime;
 
-	/*Curve float reference*/
+	/* Charge Curve Time float reference*/
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UCurveFloat* ChargeCurve;
+
+	/* Cursor Color Change curve reference*/
+	UPROPERTY(EditAnywhere, Category = "Firing")
+		UCurveLinearColor* CursorColorCurve;
 
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UAudioComponent*  LaserChargeSound;
