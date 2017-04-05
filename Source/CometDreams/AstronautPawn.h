@@ -29,9 +29,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		float TraceRangeForGaze;
 
-	/** How long does the player need to gaze at a comet to charge and fire their laser in seconds? */
-	UPROPERTY(EditAnywhere, Category = "Firing")
-		float ChargeTime;
+
 
 	/* How long does the laser display for before deactivating?*/
 	UPROPERTY(EditAnywhere, Category = "Firing")
@@ -87,6 +85,7 @@ private:
 	AActor* TargetedComet = nullptr;
 
 	FTimerHandle ShowLaserTimerHandler;
+
 
 
 

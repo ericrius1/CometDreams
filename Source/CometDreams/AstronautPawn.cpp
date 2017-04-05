@@ -7,7 +7,6 @@
 // Sets default values
 AAstronautPawn::AAstronautPawn() :
 	bLockedOntoComet(false),
-	ChargeTime(2),
 	TraceRangeForGaze(500),
 	DisplayLaserTime(0.5),
 	MovementSpeed(1)
@@ -45,6 +44,7 @@ void AAstronautPawn::BeginPlay()
 		FOnTimelineFloat ProgressFunction;
 
 
+
 		/* Contains the signature of the function that is going to
 		execute when the timeline finishes.*/
 		FOnTimelineEvent FinishFunction;
@@ -57,7 +57,6 @@ void AAstronautPawn::BeginPlay()
 
 
 		ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
-		ChargingTimeline.SetTimelineLength(ChargeTime);
 
 		ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
 
