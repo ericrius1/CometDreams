@@ -47,6 +47,9 @@ protected:
 		UAudioComponent*  LaserChargeSound;
 
 	UPROPERTY(EditAnywhere, Category = "Firing")
+		UAudioComponent* LaserShootSound;
+
+	UPROPERTY(EditAnywhere, Category = "Firing")
 		UParticleSystemComponent* Laser;
 
 	UPROPERTY(EditAnywhere, Category = "Firing")

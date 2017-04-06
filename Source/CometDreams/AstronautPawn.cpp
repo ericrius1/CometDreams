@@ -21,6 +21,9 @@ AAstronautPawn::AAstronautPawn() :
 	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Charge Sound"));
 	LaserChargeSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
+	LaserShootSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Shoot Sound"));
+	LaserShootSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+
 	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Laser Effect"));
 	Laser->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
@@ -71,7 +74,6 @@ void AAstronautPawn::Tick(float DeltaTime)
 	GazeCheck();
 
 	ChargingTimeline.TickTimeline(DeltaTime);
-
 
 
 }
@@ -141,6 +143,8 @@ void AAstronautPawn::Fire()
 	bLockedOntoComet = false;
 
 	Laser->ActivateSystem();
+
+	LaserShootSound->Play();
 
 	GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
 
