@@ -34,38 +34,35 @@ AAstronautPawn::AAstronautPawn() :
 // Called when the game starts or when spawned
 void AAstronautPawn::BeginPlay()
 {
+	checkf(ChargeCurve && CursorColorCurve, TEXT("Charge Curve and CursorColorCurve not provided in AstronaughtPawn Blueprint!!"));
+
 	Super::BeginPlay();
 
 	// Initialize Timeline
-	if (ChargeCurve)
-	{
 		/* Contains the signature of the function that is going to
 		execute every time we tick our timeline. Think of this like a delegate*/
-		FOnTimelineFloat ProgressFunction;
+	FOnTimelineFloat ProgressFunction;
 
 
 
-		/* Contains the signature of the function that is going to
-		execute when the timeline finishes.*/
-		FOnTimelineEvent FinishFunction;
+	/* Contains the signature of the function that is going to
+	execute when the timeline finishes.*/
+	FOnTimelineEvent FinishFunction;
 
-		/* In order to bind the function to our ufunction we need to create an FName which contains the
-		name of the function we want to call every time the timeline advances*/
-		ProgressFunction.BindUFunction(this, FName("HandleChargingProgress"));
+	/* In order to bind the function to our ufunction we need to create an FName which contains the
+	name of the function we want to call every time the timeline advances*/
+	ProgressFunction.BindUFunction(this, FName("HandleChargingProgress"));
 
-		FinishFunction.BindUFunction(this, FName("HandleChargingFinish"));
-
-
-		ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
+	FinishFunction.BindUFunction(this, FName("HandleChargingFinish"));
 
 
-		ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
+	ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
 
 
-	}
+	ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
+
 
 }
-
 // Called every frame
 void AAstronautPawn::Tick(float DeltaTime)
 {
@@ -75,7 +72,6 @@ void AAstronautPawn::Tick(float DeltaTime)
 
 	ChargingTimeline.TickTimeline(DeltaTime);
 
-	MyCamera->AddWorldOffset(FVector(MovementSpeed, 0.0, 0.0));
 
 
 }
@@ -131,6 +127,9 @@ void AAstronautPawn::GazeCheck()
 
 		ChargingTimeline.Stop();
 
+		FLinearColor StartingCursorColor = CursorColorCurve->GetLinearColorValue(0.0);
+		Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
+
 	}
 
 
@@ -153,13 +152,8 @@ void AAstronautPawn::HandleChargingProgress(float value)
 {
 	// GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat(value));
 
-	if (CursorColorCurve) {
-		FLinearColor CursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition());
-
-		Cursor->SetColorParameter(FName("CursorColor"), CursorColor);
-	}
-
-
+	FLinearColor CurrentCursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition());
+	Cursor->SetColorParameter(FName("CursorColor"), CurrentCursorColor);
 
 }
 
