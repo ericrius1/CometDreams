@@ -93,6 +93,8 @@ private:
 
 	FTimerHandle ShowLaserTimerHandler;
 
+	FLinearColor StartingCursorColor;
+
 
 
 

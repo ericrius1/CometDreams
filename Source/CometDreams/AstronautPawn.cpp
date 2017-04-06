@@ -46,8 +46,6 @@ void AAstronautPawn::BeginPlay()
 		execute every time we tick our timeline. Think of this like a delegate*/
 	FOnTimelineFloat ProgressFunction;
 
-
-
 	/* Contains the signature of the function that is going to
 	execute when the timeline finishes.*/
 	FOnTimelineEvent FinishFunction;
@@ -58,11 +56,12 @@ void AAstronautPawn::BeginPlay()
 
 	FinishFunction.BindUFunction(this, FName("HandleChargingFinish"));
 
-
 	ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
 
-
 	ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
+
+	StartingCursorColor = CursorColorCurve->GetLinearColorValue(0.0);
+	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
 
 }
@@ -123,17 +122,19 @@ void AAstronautPawn::GazeCheck()
 			TargetedComet = HitResult.Actor.Get();
 		}
 	}
+
+	// We were locked onto comet and now we looked away from it
 	else if (bLockedOntoComet) {
 		bLockedOntoComet = false;
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We lost tracking on target	!"));
 
 		ChargingTimeline.Stop();
 
-		FLinearColor StartingCursorColor = CursorColorCurve->GetLinearColorValue(0.0);
 		Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
-	}
+	
 
+	}
 
 }
 
@@ -149,6 +150,8 @@ void AAstronautPawn::Fire()
 	GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
 
 	TargetedComet->Destroy();
+
+	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
 }
 
