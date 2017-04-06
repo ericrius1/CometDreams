@@ -108,31 +108,34 @@ void AAstronautPawn::GazeCheck()
 		//CollisionParams)
 		)
 	{
-		if (HitResult.Actor->Tags.Contains("Comet") && !bLockedOntoComet)
+		if (HitResult.Actor->Tags.Contains("Comet"))
 		{
-			// We've locked onto a new comet!
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We are locked on to a comet!"));
-			bLockedOntoComet = true;
+			if (!TargetedComet)
+			{
+				// We've locked onto a new comet after gazing into empty space
+				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("We are locked on to comet %s"), *HitResult.Actor.Get()->GetName());
+				bLockedOntoComet = true;
+				LaserChargeSound->Play();
 
-			LaserChargeSound->Play();
+				ChargingTimeline.PlayFromStart();
+			}
 
-			// TIMELINE
-			ChargingTimeline.PlayFromStart();
-
+			// Either way we set a new targeted comet
 			TargetedComet = HitResult.Actor.Get();
+
 		}
 	}
 
-	// We were locked onto comet and now we looked away from it
+	// We were locked onto comet and now we looked away from it into space
 	else if (bLockedOntoComet) {
 		bLockedOntoComet = false;
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We lost tracking on target	!"));
 
 		ChargingTimeline.Stop();
 
-		Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
+		TargetedComet = nullptr;
 
-	
+		Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
 	}
 
@@ -150,6 +153,7 @@ void AAstronautPawn::Fire()
 	GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
 
 	TargetedComet->Destroy();
+	TargetedComet = nullptr;
 
 	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
