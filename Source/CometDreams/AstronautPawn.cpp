@@ -135,6 +135,8 @@ void AAstronautPawn::GazeCheck()
 
 		TargetedComet = nullptr;
 
+		LaserChargeSound->Stop();
+
 		Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
 	}
