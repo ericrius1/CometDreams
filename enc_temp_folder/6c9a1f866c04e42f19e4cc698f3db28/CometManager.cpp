@@ -16,7 +16,6 @@ ACometManager::ACometManager()
 void ACometManager::BeginPlay()
 {
 	Super::BeginPlay();
-	SpawnComet();
 
 	
 }
