@@ -38,3 +38,8 @@ void ACometManager::Tick(float DeltaTime)
 
 }
 
+void ACometManager::ShowSequence()
+{
+
+}
+
