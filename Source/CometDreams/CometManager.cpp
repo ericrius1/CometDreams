@@ -29,7 +29,11 @@ void ACometManager::SpawnComet()
 
 		AComet* CometRef = GetWorld()->SpawnActor<AComet>(CometBP, GetTransform(), SpawnParams);
 
-		Cast<UStaticMeshComponent>(CometRef->GetRootComponent())->SetVectorParameterValueOnMaterials("Color", CometColors[0]);
+		// Get a random color from the color list
+		UStaticMeshComponent* CometMesh = Cast<UStaticMeshComponent>(CometRef->GetRootComponent());
+		UMaterialInstanceDynamic* CometMaterial = UMaterialInstanceDynamic::Create(CometMesh->GetMaterial(0), this);
+		CometMaterial->SetVectorParameterValue(CometColorParameterName, CometColors[0]);
+		CometMesh->SetMaterial(0, CometMaterial);
 	}
 }
 

@@ -16,7 +16,7 @@ public:
 	ACometManager();
 
 	UPROPERTY(EditAnywhere, Category = "Comet")
-		TArray<FVector> CometColors;
+		TArray<FColor> CometColors;
 
 	/* Blueprint Reference of Comet Class*/
 	UPROPERTY(EditDefaultsOnly, Category = "Comet")
@@ -29,6 +29,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Comet")
+		FName CometColorParameterName;
 
 public:
 	// Called every frame
