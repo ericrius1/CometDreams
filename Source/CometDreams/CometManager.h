@@ -16,7 +16,7 @@ public:
 	ACometManager();
 
 	UPROPERTY(EditAnywhere, Category = "Comet")
-		TArray<FLinearColor> CometColors;
+		TArray<FVector> CometColors;
 
 	/* Blueprint Reference of Comet Class*/
 	UPROPERTY(EditDefaultsOnly, Category = "Comet")

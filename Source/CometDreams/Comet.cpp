@@ -43,7 +43,8 @@ void AComet::SetIsUIComet(bool NewIsUIComet)
 	{
 		
 		// UI comets are not targetable or destroyable. They are just for showing player sequence
-		this->Tags.Remove(FName("Comet"));
-		this->Tags.Add(FName("UIComet"));
+		Tags.Remove(FName("Comet"));
+		Tags.Add(FName("UIComet"));
+		
 	}
 }

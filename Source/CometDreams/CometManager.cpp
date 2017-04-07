@@ -28,6 +28,8 @@ void ACometManager::SpawnComet()
 		FActorSpawnParameters SpawnParams;
 
 		AComet* CometRef = GetWorld()->SpawnActor<AComet>(CometBP, GetTransform(), SpawnParams);
+
+		Cast<UStaticMeshComponent>(CometRef->GetRootComponent())->SetVectorParameterValueOnMaterials("Color", CometColors[0]);
 	}
 }
 
