@@ -22,8 +22,6 @@ protected:
 		USceneComponent* RootSceneComponent;
 
 
-	UPROPERTY(EditAnywhere)
-		UCameraComponent* MyCamera;
 
 	/** How far can the player target comets? */
 	UPROPERTY(EditAnywhere, Category = "Firing")
@@ -66,6 +64,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+
+    UPROPERTY(EditAnywhere)
+        UCameraComponent* MyCamera;
 
 	void GazeCheck();
 

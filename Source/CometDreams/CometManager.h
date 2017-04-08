@@ -22,8 +22,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Comet")
 		TSubclassOf<AComet> CometBP;
 
+
 	UFUNCTION()
 		void SpawnComet();
+
+	UFUNCTION()
+		void SpawnUIComet();
+
+    
+
+
 
 
 protected:
@@ -39,6 +47,9 @@ public:
 
 	void ShowSequence();
 
+private:
+
+	AComet* UIComet;
 
 
 };

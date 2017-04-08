@@ -113,7 +113,7 @@ void AAstronautPawn::GazeCheck()
 			if (!TargetedComet)
 			{
 				// We've locked onto a new comet after gazing into empty space
-				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("We are locked on to comet %s"), *HitResult.Actor.Get()->GetName());
+				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("We are locked on to comet %s"), *HitResult.Actor.Get()->GetName()));
 				bLockedOntoComet = true;
 				LaserChargeSound->Play();
 
