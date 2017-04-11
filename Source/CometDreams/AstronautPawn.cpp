@@ -31,9 +31,6 @@ AAstronautPawn::AAstronautPawn() :
 	Cursor->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
 
-    UIComet = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UI Comet"));
-    UIComet->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
-
 
 
 }

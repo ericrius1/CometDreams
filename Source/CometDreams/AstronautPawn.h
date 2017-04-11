@@ -56,8 +56,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float MovementSpeed;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Comet")
-        UStaticMeshComponent* UIComet;
 
 
 public:
