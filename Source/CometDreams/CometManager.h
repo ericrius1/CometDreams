@@ -6,7 +6,7 @@
 #include "Comet.h"
 #include "CometManager.generated.h"
 
-
+UCLASS()
 class COMETDREAMS_API ACometManager : public AActor
 {
 	GENERATED_BODY()
@@ -22,8 +22,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Comet")
 		TSubclassOf<AComet> CometBP;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Comet")
-        UStaticMeshComponent* UIComet;
+
 
 
 	UFUNCTION()
