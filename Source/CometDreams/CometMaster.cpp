@@ -15,6 +15,8 @@ UCometMaster::UCometMaster()
     UIComet = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UI Comet"));
     UIComet->AttachTo(this);
 
+    //ChangeColorUIComet();
+
 	// ...
 }
 
@@ -26,6 +28,18 @@ void UCometMaster::BeginPlay()
 
 	// ...
 	
+}
+
+void UCometMaster::ChangeColorUIComet()
+{
+    //UStaticMeshComponent* CometMesh = Cast<UStaticMeshComponent>(CometRef->GetRootComponent());
+    //UMaterialInstanceDynamic* CometMaterial = UMaterialInstanceDynamic::Create(CometMesh->GetMaterial(0), this);
+    //CometMaterial->SetVectorParameterValue(CometColorParameterName, CometColors[0]);
+    //CometMesh->SetMaterial(0, CometMaterial);
+
+    //UMaterialInstanceDynamic* CometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
+    //CometMaterial->SetVectorParameterValue(CometColorParameterName, CometColors[0]);
+    //UIComet->SetMaterial(0, CometMaterial);
 }
 
 

@@ -19,6 +19,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+    void ChangeColorUIComet();
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -26,6 +28,12 @@ public:
 
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
         UStaticMeshComponent* UIComet;
+
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        TArray<FColor> CometColors;
+
+    UPROPERTY(EditDefaultsOnly, Category = "Comet")
+        FName CometColorParameterName;
 		
 	
 };
