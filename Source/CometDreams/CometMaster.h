@@ -19,7 +19,9 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-    void ChangeColorUIComet();
+    void ChangeColorUIComet(int ColorsIndex);
+
+    void CreateSequence();
 
 public:	
 	// Called every frame
