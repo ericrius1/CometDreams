@@ -33,20 +33,29 @@ void UCometMaster::BeginPlay()
 // Create a sequence of comets to be destroyed out of available colors that the player needs to remember
 void UCometMaster::CreateSequence()
 {
+    CometSequence.Empty();
+    int NumCometsInSequence = FMath::RandRange(2, 4);
     if (CometColors.Num() > 0)
     {
-        int ColorsIndex = FMath::Rand() % CometColors.Num();
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Color Index Number %i"), ColorsIndex));
-        ChangeColorUIComet(ColorsIndex);
+        for (int i = 0; i < NumCometsInSequence; i++)
+        {
+            int ColorIndex = FMath::Rand() % CometColors.Num();
+           // GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Color Index Number %i"), ColorsIndex));
+            CometSequence.Add(CometColors[ColorIndex]);
+
+        }
+  
+
+        ChangeColorUIComet(CometSequence[0]);
     }
 
 }
 
-void UCometMaster::ChangeColorUIComet(int ColorsIndex)
+void UCometMaster::ChangeColorUIComet(FColor NewColor)
 {
 
     UMaterialInstanceDynamic* CometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
-    CometMaterial->SetVectorParameterValue(CometColorParameterName, CometColors[ColorsIndex]);
+    CometMaterial->SetVectorParameterValue(CometColorParameterName, NewColor);
     UIComet->SetMaterial(0, CometMaterial);
 }
 

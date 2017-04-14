@@ -19,9 +19,12 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-    void ChangeColorUIComet(int ColorsIndex);
+    void ChangeColorUIComet(FColor NewColor);
 
     void CreateSequence();
+
+private:
+    TArray<FColor> CometSequence;
 
 public:	
 	// Called every frame
@@ -36,6 +39,8 @@ public:
 
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
         FName CometColorParameterName;
+
+ 
 		
 	
 };
