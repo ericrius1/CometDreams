@@ -23,8 +23,20 @@ protected:
 
     void CreateSequence();
 
+    UFUNCTION()
+    void PlaySequence();
+
 private:
     TArray<FColor> CometSequence;
+
+    FTimerHandle SequenceTimerHandle;
+
+    FTimerDelegate SequenceTimerDelegate;
+
+    UMaterialInstanceDynamic* CometMaterial;
+
+
+    int CurrentIndexInSequence;
 
 public:	
 	// Called every frame
@@ -38,7 +50,7 @@ public:
         TArray<FColor> CometColors;
 
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
-        FName CometColorParameterName;
+        FName CometColorParameterName;  
 
  
 		

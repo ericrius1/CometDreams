@@ -5,7 +5,8 @@
 
 
 // Sets default values for this component's properties
-UCometMaster::UCometMaster()
+UCometMaster::UCometMaster() :
+    CurrentIndexInSequence(0)
 {
     // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
@@ -14,9 +15,6 @@ UCometMaster::UCometMaster()
 
     UIComet = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UI Comet"));
     UIComet->AttachTo(this);
-
-
-    // ...
 }
 
 
@@ -24,9 +22,11 @@ UCometMaster::UCometMaster()
 void UCometMaster::BeginPlay()
 {
     Super::BeginPlay();
+    CometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
+    UIComet->SetMaterial(0, CometMaterial);
+
     CreateSequence();
-
-
+    PlaySequence();
 
 }
 
@@ -44,9 +44,23 @@ void UCometMaster::CreateSequence()
             CometSequence.Add(CometColors[ColorIndex]);
 
         }
-  
+    }
 
-        ChangeColorUIComet(CometSequence[0]);
+}
+
+void UCometMaster::PlaySequence()
+{
+    GetWorld()->GetTimerManager().ClearTimer(SequenceTimerHandle);
+    if (CurrentIndexInSequence < CometSequence.Num())
+    {
+        GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMaster::PlaySequence, 3.0f, false);
+        ChangeColorUIComet(CometSequence[CurrentIndexInSequence]);
+        CurrentIndexInSequence++;   
+    }
+    else 
+    {
+      
+        CurrentIndexInSequence = 0;
     }
 
 }
@@ -54,9 +68,7 @@ void UCometMaster::CreateSequence()
 void UCometMaster::ChangeColorUIComet(FColor NewColor)
 {
 
-    UMaterialInstanceDynamic* CometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
     CometMaterial->SetVectorParameterValue(CometColorParameterName, NewColor);
-    UIComet->SetMaterial(0, CometMaterial);
 }
 
 
