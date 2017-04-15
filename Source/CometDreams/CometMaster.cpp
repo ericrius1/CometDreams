@@ -40,7 +40,7 @@ void UCometMaster::CreateSequence()
         for (int i = 0; i < NumCometsInSequence; i++)
         {
             int ColorIndex = FMath::Rand() % CometColors.Num();
-           // GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Color Index Number %i"), ColorsIndex));
+            // GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Color Index Number %i"), ColorsIndex));
             CometSequence.Add(CometColors[ColorIndex]);
 
         }
@@ -50,18 +50,17 @@ void UCometMaster::CreateSequence()
 
 void UCometMaster::PlaySequence()
 {
-    GetWorld()->GetTimerManager().ClearTimer(SequenceTimerHandle);
-    if (CurrentIndexInSequence < CometSequence.Num())
+
+    if (CurrentIndexInSequence == CometSequence.Num())
     {
-        GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMaster::PlaySequence, 3.0f, false);
-        ChangeColorUIComet(CometSequence[CurrentIndexInSequence]);
-        CurrentIndexInSequence++;   
-    }
-    else 
-    {
-      
         CurrentIndexInSequence = 0;
     }
+
+    GetWorld()->GetTimerManager().ClearTimer(SequenceTimerHandle);
+
+    GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMaster::PlaySequence, 3.0f, false);
+    ChangeColorUIComet(CometSequence[CurrentIndexInSequence]);
+    CurrentIndexInSequence++;
 
 }
 
