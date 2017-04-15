@@ -6,7 +6,8 @@
 
 // Sets default values for this component's properties
 UCometMaster::UCometMaster() :
-    CurrentIndexInSequence(0)
+    CurrentIndexInSequence(0),
+    TimeBetweenSequenceItems(2.0f)
 {
     // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
@@ -34,14 +35,24 @@ void UCometMaster::BeginPlay()
 void UCometMaster::CreateSequence()
 {
     CometSequence.Empty();
-    int NumCometsInSequence = FMath::RandRange(2, 4);
+    int NumCometsInSequence = 4;
     if (CometColors.Num() > 0)
     {
+        int PreviousColorIndex = -1;
+        int ColorIndex = -1;
         for (int i = 0; i < NumCometsInSequence; i++)
         {
-            int ColorIndex = FMath::Rand() % CometColors.Num();
+            
+            while (ColorIndex == PreviousColorIndex)
+            {
+                // Ensures the next comet in the sequence has a different color than the last.
+                ColorIndex = FMath::Rand() % CometColors.Num();
+            }
+            
             // GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Color Index Number %i"), ColorsIndex));
             CometSequence.Add(CometColors[ColorIndex]);
+
+            PreviousColorIndex = ColorIndex;
 
         }
     }
@@ -50,17 +61,19 @@ void UCometMaster::CreateSequence()
 
 void UCometMaster::PlaySequence()
 {
-
+    GetWorld()->GetTimerManager().ClearTimer(SequenceTimerHandle);
     if (CurrentIndexInSequence == CometSequence.Num())
     {
         CurrentIndexInSequence = 0;
     }
 
-    GetWorld()->GetTimerManager().ClearTimer(SequenceTimerHandle);
+    else
+    {
+        GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMaster::PlaySequence, TimeBetweenSequenceItems, false);
+        ChangeColorUIComet(CometSequence[CurrentIndexInSequence]);
+        CurrentIndexInSequence++;
+    }
 
-    GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMaster::PlaySequence, 3.0f, false);
-    ChangeColorUIComet(CometSequence[CurrentIndexInSequence]);
-    CurrentIndexInSequence++;
 
 }
 

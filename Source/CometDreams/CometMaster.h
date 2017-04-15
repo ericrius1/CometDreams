@@ -52,6 +52,9 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
         FName CometColorParameterName;  
 
+    UPROPERTY(EditDefaultsOnly, Category = "Comet")
+        float TimeBetweenSequenceItems;
+
  
 		
 	
