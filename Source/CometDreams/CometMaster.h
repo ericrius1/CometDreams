@@ -7,25 +7,28 @@
 #include "CometMaster.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class COMETDREAMS_API UCometMaster : public USceneComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UCometMaster();
+public:
+    // Sets default values for this component's properties
+    UCometMaster();
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+    // Called when the game starts
+    virtual void BeginPlay() override;
 
     void ChangeColorUIComet(FColor NewColor);
 
     void CreateSequence();
 
     UFUNCTION()
-    void PlaySequence();
+        void PlaySequence();
+
+    UFUNCTION()
+        void SpawnComet();
 
     //TODO : Write spawn comet method and keep track of when player has successfully destroyed comets in right order
 
@@ -41,9 +44,9 @@ private:
 
     int CurrentIndexInSequence;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+public:
+    // Called every frame
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
@@ -53,13 +56,17 @@ public:
         TArray<FColor> CometColors;
 
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
-        FName CometColorParameterName;  
+        FName CometColorParameterName;
 
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
         float TimeBetweenSequenceItems;
 
+    /* Blueprint Reference of Comet Class*/
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        TSubclassOf<AComet> CometBP;
 
- 
-		
-	
+
+
+
+
 };

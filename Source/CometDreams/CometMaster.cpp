@@ -13,9 +13,9 @@ UCometMaster::UCometMaster() :
     // off to improve performance if you don't need them.
     PrimaryComponentTick.bCanEverTick = true;
 
-
     UIComet = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UI Comet"));
-    UIComet->AttachTo(this);
+ 
+    UIComet->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 }
 
 
@@ -28,7 +28,21 @@ void UCometMaster::BeginPlay()
 
     CreateSequence();
     PlaySequence();
+    SpawnComet();
 
+}
+
+void UCometMaster::SpawnComet()
+{
+    if (CometBP)
+    {
+        FActorSpawnParameters SpawnParams;
+        FTransform CometSpawnPoint = GetOwner()->GetTransform();
+        CometSpawnPoint.AddToTranslation(FVector(100, 0, 0));
+        AComet* CometRef = GetWorld()->SpawnActor<AComet>(CometBP,CometSpawnPoint, SpawnParams);
+
+
+    }
 }
 
 // Create a sequence of comets to be destroyed out of available colors that the player needs to remember
@@ -42,13 +56,13 @@ void UCometMaster::CreateSequence()
         int ColorIndex = -1;
         for (int i = 0; i < NumCometsInSequence; i++)
         {
-            
+
             while (ColorIndex == PreviousColorIndex)
             {
                 // Ensures the next comet in the sequence has a different color than the last.
                 ColorIndex = FMath::Rand() % CometColors.Num();
             }
-            
+
             // GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Color Index Number %i"), ColorsIndex));
             CometSequence.Add(CometColors[ColorIndex]);
 
