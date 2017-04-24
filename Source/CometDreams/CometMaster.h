@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components/SceneComponent.h"
+#include "Comet.h"
 #include "CometMaster.generated.h"
 
 
