@@ -7,8 +7,10 @@
 // Sets default values
 AComet::AComet()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+    RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Scene Component"));
+
+    CometMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Comet Mesh"));
+    CometMesh->AttachToComponent(RootSceneComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -17,12 +19,10 @@ void AComet::BeginPlay()
 	Super::BeginPlay();
 	this->Tags.Add("Comet");
 
-	
 }
 
-// Called every frame
-void AComet::Tick(float DeltaTime)
+void AComet::ChangeMaterial(FColor NewColor)
 {
-	Super::Tick(DeltaTime);
+
 }
 

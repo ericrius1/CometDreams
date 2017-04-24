@@ -39,7 +39,7 @@ private:
 
     FTimerDelegate SequenceTimerDelegate;
 
-    UMaterialInstanceDynamic* CometMaterial;
+    UMaterialInstanceDynamic* UICometMaterial;
 
 
     int CurrentIndexInSequence;

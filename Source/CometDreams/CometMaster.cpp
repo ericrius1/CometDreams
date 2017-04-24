@@ -15,7 +15,7 @@ UCometMaster::UCometMaster() :
 
     UIComet = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UI Comet"));
  
-    UIComet->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
+    UIComet->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 
@@ -23,8 +23,8 @@ UCometMaster::UCometMaster() :
 void UCometMaster::BeginPlay()
 {
     Super::BeginPlay();
-    CometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
-    UIComet->SetMaterial(0, CometMaterial);
+    UICometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
+    UIComet->SetMaterial(0, UICometMaterial);
 
     CreateSequence();
     PlaySequence();
@@ -39,7 +39,7 @@ void UCometMaster::SpawnComet()
         FActorSpawnParameters SpawnParams;
         FTransform CometSpawnPoint = GetOwner()->GetTransform();
         CometSpawnPoint.AddToTranslation(FVector(100, 0, 0));
-        AComet* CometRef = GetWorld()->SpawnActor<AComet>(CometBP,CometSpawnPoint, SpawnParams);
+        AComet* NewComet = GetWorld()->SpawnActor<AComet>(CometBP, CometSpawnPoint, SpawnParams);
 
 
     }
@@ -94,7 +94,7 @@ void UCometMaster::PlaySequence()
 void UCometMaster::ChangeColorUIComet(FColor NewColor)
 {
 
-    CometMaterial->SetVectorParameterValue(CometColorParameterName, NewColor);
+    UICometMaterial->SetVectorParameterValue(CometColorParameterName, NewColor);
 }
 
 
