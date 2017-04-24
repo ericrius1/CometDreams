@@ -5,8 +5,7 @@
 
 
 // Sets default values
-AComet::AComet() :
-	IsUIComet(false)
+AComet::AComet()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -29,22 +28,3 @@ void AComet::Tick(float DeltaTime)
 	
 }
 
-bool AComet::GetIsUIComet()
-{
-	return IsUIComet;
-	
-}
-
-void AComet::SetIsUIComet(bool NewIsUIComet)
-{
-	IsUIComet = NewIsUIComet;
-
-	if (IsUIComet)
-	{
-		
-		// UI comets are not targetable or destroyable. They are just for showing player sequence
-		Tags.Remove(FName("Comet"));
-		Tags.Add(FName("UIComet"));
-		
-	}
-}

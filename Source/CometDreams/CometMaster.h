@@ -26,6 +26,8 @@ protected:
     UFUNCTION()
     void PlaySequence();
 
+    //TODO : Write spawn comet method and keep track of when player has successfully destroyed comets in right order
+
 private:
     TArray<FColor> CometSequence;
 
@@ -54,6 +56,7 @@ public:
 
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
         float TimeBetweenSequenceItems;
+
 
  
 		
