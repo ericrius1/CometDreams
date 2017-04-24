@@ -11,6 +11,7 @@ AComet::AComet()
 
     CometMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Comet Mesh"));
     CometMesh->AttachToComponent(RootSceneComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 }
 
 // Called when the game starts or when spawned
@@ -19,10 +20,13 @@ void AComet::BeginPlay()
 	Super::BeginPlay();
 	this->Tags.Add("Comet");
 
+    CometMaterial = UMaterialInstanceDynamic::Create(CometMesh->GetMaterial(0), this);
+    CometMesh->SetMaterial(0, CometMaterial);
+
 }
 
 void AComet::ChangeMaterial(FColor NewColor)
 {
-
+    CometMaterial->SetVectorParameterValue(FName("Comet Color"), NewColor);
 }
 

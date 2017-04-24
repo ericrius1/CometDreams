@@ -29,8 +29,15 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
         UStaticMeshComponent* CometMesh;
 
+
     UFUNCTION()
         void ChangeMaterial(FColor NewColor);
+
+  
+
+private:
+
+    UMaterialInstanceDynamic* CometMaterial;  
 
 
 

@@ -41,6 +41,9 @@ void UCometMaster::SpawnComet()
         CometSpawnPoint.AddToTranslation(FVector(100, 0, 0));
         AComet* NewComet = GetWorld()->SpawnActor<AComet>(CometBP, CometSpawnPoint, SpawnParams);
 
+        int ColorIndex = FMath::Rand() % CometColors.Num();
+        NewComet->ChangeMaterial(CometColors[ColorIndex]);
+
 
     }
 }
