@@ -26,7 +26,7 @@ public:
         USceneComponent* RootSceneComponent;
 
 
-    UPROPERTY(EditDefaultsOnly, Category = "Comet")
+    UPROPERTY(VisibleAnywhere, Category = "Comet")
         UStaticMeshComponent* CometMesh;
 
 

@@ -37,7 +37,7 @@ private:
 
     FTimerHandle SequenceTimerHandle;
 
-    FTimerDelegate SequenceTimerDelegate;
+    FTimerHandle CometSpawnerHandle;
 
     UMaterialInstanceDynamic* UICometMaterial;
 
@@ -65,6 +65,9 @@ public:
     UPROPERTY(EditAnywhere, Category = "Comet")
         TSubclassOf<AComet> CometBP;
 
+    /* How many comets the player needs to memorize and destroy in correct order */
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        int NumCometsInSequence = 2;
 
 
 
