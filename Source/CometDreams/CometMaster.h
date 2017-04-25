@@ -8,13 +8,13 @@
 
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class COMETDREAMS_API UCometMaster : public USceneComponent
+class COMETDREAMS_API UCometMasterComponent : public USceneComponent
 {
     GENERATED_BODY()
 
 public:
     // Sets default values for this component's properties
-    UCometMaster();
+    UCometMasterComponent();
 
 protected:
     // Called when the game starts

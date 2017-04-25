@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Pawn.h"
+#include "CometMaster.h"
 #include "AstronautPawn.generated.h"
 
 UCLASS()
@@ -20,6 +21,9 @@ protected:
 
 	UPROPERTY()
 		USceneComponent* RootSceneComponent;
+
+    UPROPERTY(VisibleAnywhere)
+        UCometMasterComponent* CometMasterComponent;
 
 
 

@@ -19,7 +19,7 @@ AAstronautPawn::AAstronautPawn() :
 	MyCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Game Camera"));
 
 	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Charge Sound"));
-	LaserChargeSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+	LaserChargeSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform); 
 
 	LaserShootSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Shoot Sound"));
 	LaserShootSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
@@ -29,6 +29,9 @@ AAstronautPawn::AAstronautPawn() :
 
 	Cursor = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Cursor"));
 	Cursor->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+
+    CometMasterComponent = CreateDefaultSubobject<UCometMasterComponent>(TEXT("CometMasterComponent"));
+    CometMasterComponent->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
 
 

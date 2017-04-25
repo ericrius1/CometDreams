@@ -5,7 +5,7 @@
 
 
 // Sets default values for this component's properties
-UCometMaster::UCometMaster() :
+UCometMasterComponent::UCometMasterComponent() :
     CurrentIndexInSequence(0),
     TimeBetweenSequenceItems(2.0f)
 {
@@ -20,7 +20,7 @@ UCometMaster::UCometMaster() :
 
 
 // Called when the game starts
-void UCometMaster::BeginPlay()
+void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
     UICometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
@@ -32,7 +32,7 @@ void UCometMaster::BeginPlay()
 
 }
 
-void UCometMaster::SpawnComet()
+void UCometMasterComponent::SpawnComet()
 {
     if (CometBP)
     {
@@ -44,13 +44,13 @@ void UCometMaster::SpawnComet()
         int ColorIndex = FMath::Rand() % CometColors.Num();
         NewComet->ChangeMaterial(CometColors[ColorIndex]);
 
-       GetWorld()->GetTimerManager().SetTimer(CometSpawnerHandle, this, &UCometMaster::SpawnComet, 5.0f, true);
+       GetWorld()->GetTimerManager().SetTimer(CometSpawnerHandle, this, &UCometMasterComponent::SpawnComet, 5.0f, true);
 
     }
 }
 
 // Create a sequence of comets to be destroyed out of available colors that the player needs to remember
-void UCometMaster::CreateSequence()
+void UCometMasterComponent::CreateSequence()
 {
     CometSequence.Empty();
     if (CometColors.Num() > 0)
@@ -76,7 +76,7 @@ void UCometMaster::CreateSequence()
 
 }
 
-void UCometMaster::PlaySequence()
+void UCometMasterComponent::PlaySequence()
 {
     GetWorld()->GetTimerManager().ClearTimer(SequenceTimerHandle);
     if (CurrentIndexInSequence == CometSequence.Num())
@@ -86,7 +86,7 @@ void UCometMaster::PlaySequence()
 
     else
     {
-        GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMaster::PlaySequence, TimeBetweenSequenceItems, false);
+        GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMasterComponent::PlaySequence, TimeBetweenSequenceItems, false);
         ChangeColorUIComet(CometSequence[CurrentIndexInSequence]);
         CurrentIndexInSequence++;
     }
@@ -94,7 +94,7 @@ void UCometMaster::PlaySequence()
 
 }
 
-void UCometMaster::ChangeColorUIComet(FColor NewColor)
+void UCometMasterComponent::ChangeColorUIComet(FColor NewColor)
 {
 
     UICometMaterial->SetVectorParameterValue(CometColorParameterName, NewColor);
@@ -102,7 +102,7 @@ void UCometMaster::ChangeColorUIComet(FColor NewColor)
 
 
 // Called every frame
-void UCometMaster::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UCometMasterComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
