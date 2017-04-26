@@ -39,6 +39,21 @@ void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
 
 }
 
+void UCometMasterComponent::DestroyComet(AActor* Comet)
+{
+    FColor CurrentColor = CometColors[CurrentIndexInSequence];
+    AComet* CometToCheck = Cast<AComet>(Comet);
+    FLinearColor Color;
+    CometToCheck->CometMesh->GetMaterial(0)->GetVectorParameterValue(CometColorParameterName, Color);
+    
+
+    if (Color.Equals(CometColors[CurrentIndexInSequence]))
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Destroyed Right Comet!!"));
+    }
+    Comet->Destroy();
+}
+
 void UCometMasterComponent::SpawnComet()
 {
     if (CometBP)

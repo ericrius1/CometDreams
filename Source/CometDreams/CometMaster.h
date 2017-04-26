@@ -54,7 +54,8 @@ public:
     UFUNCTION()
         void SetupUIComet(UStaticMeshComponent* InUIComet);
     
-
+    UFUNCTION()
+        void DestroyComet(AActor* Comet);
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         TArray<FColor> CometColors;

@@ -165,7 +165,7 @@ void AAstronautPawn::Fire()
 
 	GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
 
-	TargetedComet->Destroy();
+    CometMasterComponent->DestroyComet(TargetedComet);
 	TargetedComet = nullptr;
 
 	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
