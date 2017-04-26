@@ -7,14 +7,14 @@
 #include "CometMaster.generated.h"
 
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class COMETDREAMS_API UCometMasterComponent : public USceneComponent
 {
     GENERATED_BODY()
 
 public:
     // Sets default values for this component's properties
-    UCometMasterComponent();
+    UCometMasterComponent(const FObjectInitializer& OI);
 
 protected:
     // Called when the game starts
@@ -29,6 +29,9 @@ protected:
 
     UFUNCTION()
         void SpawnComet();
+
+
+        UStaticMeshComponent* UIComet;
 
     //TODO : Write spawn comet method and keep track of when player has successfully destroyed comets in right order
 
@@ -48,9 +51,10 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+    UFUNCTION()
+        void SetupUIComet(UStaticMeshComponent* InUIComet);
+    
 
-    UPROPERTY(EditDefaultsOnly, Category = "Comet")
-        UStaticMeshComponent* UIComet;
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         TArray<FColor> CometColors;

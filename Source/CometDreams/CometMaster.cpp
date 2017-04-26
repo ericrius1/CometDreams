@@ -5,7 +5,8 @@
 
 
 // Sets default values for this component's properties
-UCometMasterComponent::UCometMasterComponent() :
+UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
+    Super(OI),
     CurrentIndexInSequence(0),
     TimeBetweenSequenceItems(2.0f)
 {
@@ -13,9 +14,6 @@ UCometMasterComponent::UCometMasterComponent() :
     // off to improve performance if you don't need them.
     PrimaryComponentTick.bCanEverTick = true;
 
-    UIComet = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UI Comet"));
- 
-    UIComet->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 
@@ -23,12 +21,21 @@ UCometMasterComponent::UCometMasterComponent() :
 void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
+
+
+
+    SpawnComet();
+
+}
+
+void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
+{
+    UIComet = InUIComet;
     UICometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
     UIComet->SetMaterial(0, UICometMaterial);
 
     CreateSequence();
     PlaySequence();
-    SpawnComet();
 
 }
 

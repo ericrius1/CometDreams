@@ -6,14 +6,14 @@
 #include "CometMaster.h"
 #include "AstronautPawn.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable)
 class COMETDREAMS_API AAstronautPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AAstronautPawn();
+	AAstronautPawn(const FObjectInitializer& OI);
 
 protected:
 	// Called when the game starts or when spawned
@@ -22,7 +22,7 @@ protected:
 	UPROPERTY()
 		USceneComponent* RootSceneComponent;
 
-    UPROPERTY(VisibleAnywhere)
+    UPROPERTY(EditAnywhere , BlueprintReadWrite)
         UCometMasterComponent* CometMasterComponent;
 
 
@@ -47,6 +47,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UAudioComponent*  LaserChargeSound;
+
+    UPROPERTY(EditAnywhere, Category = "Firing")
+        UStaticMeshComponent*  UIComet;
+
 
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UAudioComponent* LaserShootSound;

@@ -5,7 +5,8 @@
 
 
 // Sets default values
-AAstronautPawn::AAstronautPawn() :
+AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
+    Super(OI),
 	bLockedOntoComet(false),
 	TraceRangeForGaze(500),
 	DisplayLaserTime(0.5),
@@ -27,14 +28,18 @@ AAstronautPawn::AAstronautPawn() :
 	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Laser Effect"));
 	Laser->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
+ 
+
+
+
 	Cursor = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Cursor"));
 	Cursor->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
-    CometMasterComponent = CreateDefaultSubobject<UCometMasterComponent>(TEXT("CometMasterComponent"));
+    CometMasterComponent = OI.CreateDefaultSubobject<UCometMasterComponent>(this, TEXT("CometMasterComponent"));
     CometMasterComponent->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
-
-
+    UIComet = CreateDefaultSubobject< UStaticMeshComponent>(TEXT("UI Comet"));
+    UIComet->AttachToComponent(CometMasterComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 }
 
@@ -44,6 +49,8 @@ void AAstronautPawn::BeginPlay()
 	checkf(ChargeCurve && CursorColorCurve, TEXT("Charge Curve and CursorColorCurve not provided in AstronaughtPawn Blueprint!!"));
 
 	Super::BeginPlay();
+
+    CometMasterComponent->SetupUIComet(UIComet);
 
 	// Initialize Timeline
 		/* Contains the signature of the function that is going to
