@@ -45,7 +45,11 @@ private:
     UMaterialInstanceDynamic* UICometMaterial;
 
 
-    int CurrentIndexInSequence;
+    int CurrentIndexInDisplaySequence;
+
+    //Where are we in terms of which comets have actually been destroyed?
+    int CurrentIndexInActualSequence;
+
 
 public:
     // Called every frame

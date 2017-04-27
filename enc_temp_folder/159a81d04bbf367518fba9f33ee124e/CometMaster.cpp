@@ -47,10 +47,10 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
 
     
     GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Targeted Comet %f"), Color.R));
-    GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Sequence Comet %f"), CometSequence[CurrentIndexInDisplaySequence].R));
+    GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Sequence Comet %f"), CometColors[CurrentIndexInDisplaySequence].R));
 
 
-    if (Color.Equals(CometSequence[CurrentIndexInActualSequence]))
+    if (Color.Equals(CometColors[CurrentIndexInActualSequence]))
     {
         GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Destroyed Right Comet!!"));
         CurrentIndexInActualSequence++;
