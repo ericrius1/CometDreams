@@ -20,7 +20,7 @@ protected:
     // Called when the game starts
     virtual void BeginPlay() override;
 
-    void ChangeColorUIComet(FColor NewColor);
+    void ChangeColorUIComet(FLinearColor NewColor);
 
     void CreateSequence();
 
@@ -36,7 +36,7 @@ protected:
     //TODO : Write spawn comet method and keep track of when player has successfully destroyed comets in right order
 
 private:
-    TArray<FColor> CometSequence;
+    TArray<FLinearColor> CometSequence;
 
     FTimerHandle SequenceTimerHandle;
 
@@ -58,7 +58,7 @@ public:
         void DestroyComet(AActor* Comet);
 
     UPROPERTY(EditAnywhere, Category = "Comet")
-        TArray<FColor> CometColors;
+        TArray<FLinearColor> CometColors;
 
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
         FName CometColorParameterName;
@@ -73,6 +73,9 @@ public:
     /* How many comets the player needs to memorize and destroy in correct order */
     UPROPERTY(EditAnywhere, Category = "Comet")
         int NumCometsInSequence = 2;
+
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        float SpawnIntervalTime = 2.0f;
 
 
 

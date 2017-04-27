@@ -25,7 +25,7 @@ void AComet::BeginPlay()
 
 }
 
-void AComet::ChangeMaterial(FColor NewColor)
+void AComet::ChangeMaterial(FLinearColor NewColor)
 {
     CometMaterial->SetVectorParameterValue(FName("Comet Color"), NewColor);
 }

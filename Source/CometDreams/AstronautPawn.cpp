@@ -140,7 +140,6 @@ void AAstronautPawn::GazeCheck()
 	// We were locked onto comet and now we looked away from it into space
 	else if (bLockedOntoComet) {
 		bLockedOntoComet = false;
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("We lost tracking on target	!"));
 
 		ChargingTimeline.Stop();
 
@@ -174,7 +173,6 @@ void AAstronautPawn::Fire()
 
 void AAstronautPawn::HandleChargingProgress(float value)
 {
-	// GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::SanitizeFloat(value));
 
 	FLinearColor CurrentCursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition());
 	Cursor->SetColorParameter(FName("CursorColor"), CurrentCursorColor);
@@ -183,7 +181,6 @@ void AAstronautPawn::HandleChargingProgress(float value)
 
 void AAstronautPawn::HandleChargingFinish()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Charging Finished"));
 	Fire();
 }
 

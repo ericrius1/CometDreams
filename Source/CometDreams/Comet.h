@@ -31,7 +31,7 @@ public:
 
 
     UFUNCTION()
-        void ChangeMaterial(FColor NewColor);
+        void ChangeMaterial(FLinearColor NewColor);
 
   
 
