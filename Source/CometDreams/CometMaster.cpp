@@ -21,9 +21,6 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
 void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
-
-
-
     SpawnComet();
 
 }
@@ -41,15 +38,29 @@ void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
 
 void UCometMasterComponent::DestroyComet(AActor* Comet)
 {
-    FColor CurrentColor = CometColors[CurrentIndexInSequence];
     AComet* CometToCheck = Cast<AComet>(Comet);
     FLinearColor Color;
     CometToCheck->CometMesh->GetMaterial(0)->GetVectorParameterValue(CometColorParameterName, Color);
+
+  
+
     
+    GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Targeted Comet %f"), Color.R));
+    GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Sequence Comet %f"), CometColors[CurrentIndexInSequence].R));
+
 
     if (Color.Equals(CometColors[CurrentIndexInSequence]))
     {
         GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Destroyed Right Comet!!"));
+        CurrentIndexInSequence++;
+        if (CurrentIndexInSequence == CometSequence.Num())
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, TEXT("Congrats you destroyed all the comets in this sequence!"));
+            CurrentIndexInSequence = 0;
+
+            CreateSequence();
+            PlaySequence();
+        }
     }
     Comet->Destroy();
 }
@@ -66,7 +77,7 @@ void UCometMasterComponent::SpawnComet()
         int ColorIndex = FMath::Rand() % CometColors.Num();
         NewComet->ChangeMaterial(CometColors[ColorIndex]);
 
-       GetWorld()->GetTimerManager().SetTimer(CometSpawnerHandle, this, &UCometMasterComponent::SpawnComet, 5.0f, true);
+       GetWorld()->GetTimerManager().SetTimer(CometSpawnerHandle, this, &UCometMasterComponent::SpawnComet, SpawnIntervalTime, true);
 
     }
 }
@@ -88,7 +99,6 @@ void UCometMasterComponent::CreateSequence()
                 ColorIndex = FMath::Rand() % CometColors.Num();
             }
 
-            // GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Color Index Number %i"), ColorsIndex));
             CometSequence.Add(CometColors[ColorIndex]);
 
             PreviousColorIndex = ColorIndex;
@@ -108,15 +118,16 @@ void UCometMasterComponent::PlaySequence()
 
     else
     {
-        GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMasterComponent::PlaySequence, TimeBetweenSequenceItems, false);
         ChangeColorUIComet(CometSequence[CurrentIndexInSequence]);
         CurrentIndexInSequence++;
-    }
 
+        GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMasterComponent::PlaySequence, TimeBetweenSequenceItems, false);
+
+    }
 
 }
 
-void UCometMasterComponent::ChangeColorUIComet(FColor NewColor)
+void UCometMasterComponent::ChangeColorUIComet(FLinearColor NewColor)
 {
 
     UICometMaterial->SetVectorParameterValue(CometColorParameterName, NewColor);
