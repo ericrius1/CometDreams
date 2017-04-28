@@ -116,6 +116,9 @@ public:
         USoundCue* CorrectCometSound;
 
     UPROPERTY(EditAnywhere, Category = "Comet")
+        USoundCue* RoundCompleteSound;
+
+    UPROPERTY(EditAnywhere, Category = "Comet")
         UAudioComponent* CorrectCometAudioComponent;
 
     UPROPERTY(EditAnywhere, Category = "Comet")

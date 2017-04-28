@@ -71,7 +71,7 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
         {
             GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, TEXT("Congrats you destroyed all the comets in this sequence!"));
             CurrentIndexInActualSequence = 0;
-
+            UGameplayStatics::PlaySound2D(this, RoundCompleteSound);
             NewRound();
         }
     }
