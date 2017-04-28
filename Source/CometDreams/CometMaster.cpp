@@ -31,9 +31,12 @@ void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
     UICometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
     UIComet->SetMaterial(0, UICometMaterial);
 
-    CreateSequence();
-    PlaySequence();
+  
+}
 
+void UCometMasterComponent::IncreaseDifficulty()
+{
+    NumCometsInSequence++;
 }
 
 void UCometMasterComponent::DestroyComet(AActor* Comet)
@@ -74,6 +77,7 @@ void UCometMasterComponent::DestroyAllComets()
 
     SpawnedComets.Empty();
 }
+
 
 void UCometMasterComponent::SpawnComet()
 {

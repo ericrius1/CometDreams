@@ -23,7 +23,7 @@ protected:
 		USceneComponent* RootSceneComponent;
 
     UPROPERTY(EditAnywhere , BlueprintReadWrite)
-        UCometMasterComponent* CometMasterComponent;
+        UCometMasterComponent* CometMaster;
 
 
 

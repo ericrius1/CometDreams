@@ -22,15 +22,11 @@ protected:
 
     void ChangeColorUIComet(FLinearColor NewColor);
 
-    void CreateSequence();
-
-    UFUNCTION()
-        void PlaySequence();
 
 
 
 
-        UStaticMeshComponent* UIComet;
+    UStaticMeshComponent* UIComet;
 
     //TODO : Write spawn comet method and keep track of when player has successfully destroyed comets in right order
 
@@ -60,7 +56,7 @@ public:
 
     UFUNCTION()
         void SetupUIComet(UStaticMeshComponent* InUIComet);
-    
+
     UFUNCTION()
         void SpawnComet();
 
@@ -69,6 +65,16 @@ public:
 
     UFUNCTION()
         void DestroyAllComets();
+
+    UFUNCTION()
+        void CreateSequence();
+
+    UFUNCTION()
+        void PlaySequence();
+
+    UFUNCTION()
+        void IncreaseDifficulty();
+
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         TArray<FLinearColor> CometColors;

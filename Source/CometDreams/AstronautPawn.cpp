@@ -35,11 +35,11 @@ AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
 	Cursor = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Cursor"));
 	Cursor->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
-    CometMasterComponent = OI.CreateDefaultSubobject<UCometMasterComponent>(this, TEXT("CometMasterComponent"));
-    CometMasterComponent->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+    CometMaster = OI.CreateDefaultSubobject<UCometMasterComponent>(this, TEXT("CometMasterComponent"));
+    CometMaster->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
     UIComet = CreateDefaultSubobject< UStaticMeshComponent>(TEXT("UI Comet"));
-    UIComet->AttachToComponent(CometMasterComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    UIComet->AttachToComponent(CometMaster, FAttachmentTransformRules::KeepRelativeTransform);
 
 }
 
@@ -98,22 +98,21 @@ void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AAstronautPawn::ResetGame()
 {   
-    CometMasterComponent->DestroyAllComets();
+    CometMaster->DestroyAllComets();
+
+    CometMaster->CreateSequence();
+    CometMaster->PlaySequence();
+    CometMaster->SpawnComet();
 }
 
 void AAstronautPawn::IncreaseDifficulty()
 {
     if (DifficultyLevel == 0)
     {
-        CometMasterComponent->SetupUIComet(UIComet);
-        CometMasterComponent->SpawnComet();
+        CometMaster->SetupUIComet(UIComet);
     }
-
-    else 
-    {
-        ResetGame();
-    }
-
+    CometMaster->IncreaseDifficulty();
+    ResetGame();
     DifficultyLevel++;
 }
 
@@ -184,7 +183,7 @@ void AAstronautPawn::Fire()
 
 	GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
 
-    CometMasterComponent->DestroyComet(TargetedComet);
+    CometMaster->DestroyComet(TargetedComet);
 	TargetedComet = nullptr;
 
 	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
