@@ -15,6 +15,8 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     // off to improve performance if you don't need them.
     PrimaryComponentTick.bCanEverTick = true;
 
+    CorrectCometAudioComponent = OI.CreateDefaultSubobject<UAudioComponent>(this, TEXT("Correct Comet Audio Component"));
+    CorrectCometAudioComponent->SetupAttachment(this);
 }
 
 
@@ -22,6 +24,7 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
 void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
+    CorrectCometAudioComponent->SetSound(CorrectCometSound);
     CurrentNumCometsInSequence = StartingNumCometsInSequence;
 
 
@@ -29,7 +32,7 @@ void UCometMasterComponent::BeginPlay()
 
 void UCometMasterComponent::Reset()
 {
-
+    CurrentNumCometsInSequence = StartingNumCometsInSequence;
     NewRound();
 }
 
@@ -57,6 +60,8 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
 
     if (Color.Equals(CometSequence[CurrentIndexInActualSequence]))
     {
+        // We destroyed the correct comet!
+        CorrectCometAudioComponent->Play();
         GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Destroyed Right Comet!!"));
         CurrentIndexInActualSequence++;
         if (CurrentIndexInActualSequence == CometSequence.Num())
@@ -156,7 +161,8 @@ void UCometMasterComponent::PlaySequence()
     {
         CurrentIndexInDisplaySequence = 0;
 
-        //Once sequence is finished playing we start spawning comets
+        //Once sequence is finished playing we start spawning comets and make ui comet invisible
+        UIComet->SetVisibility(false);
         SpawnComet();
     }
 
