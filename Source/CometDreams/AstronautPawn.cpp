@@ -98,11 +98,10 @@ void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AAstronautPawn::ResetGame()
 {   
-    CometMaster->DestroyAllComets();
+    CometMaster->NewRound();
 
-    CometMaster->CreateSequence();
-    CometMaster->PlaySequence();
-    CometMaster->SpawnComet();
+
+
 }
 
 void AAstronautPawn::IncreaseDifficulty()

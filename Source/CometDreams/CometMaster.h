@@ -39,6 +39,8 @@ private:
 
     FTimerHandle CometSpawnerHandle;
 
+    FTimerHandle RoundWaitTimeHandle;
+
     UMaterialInstanceDynamic* UICometMaterial;
 
 
@@ -75,6 +77,9 @@ public:
     UFUNCTION()
         void IncreaseDifficulty();
 
+    UFUNCTION()
+        void NewRound();
+
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         TArray<FLinearColor> CometColors;
@@ -95,6 +100,10 @@ public:
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         float SpawnIntervalTime = 2.0f;
+
+
+    UPROPERTY(EditAnywhere, Category = "Timing")
+        float TimeBetweenRounds = 3.0f;
 
 
 

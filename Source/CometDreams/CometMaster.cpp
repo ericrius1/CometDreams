@@ -30,8 +30,6 @@ void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
     UIComet = InUIComet;
     UICometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
     UIComet->SetMaterial(0, UICometMaterial);
-
-  
 }
 
 void UCometMasterComponent::IncreaseDifficulty()
@@ -45,9 +43,6 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     FLinearColor Color;
     CometToCheck->CometMesh->GetMaterial(0)->GetVectorParameterValue(CometColorParameterName, Color);
 
-  
-
-    
     GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Targeted Comet %f"), Color.R));
     GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Sequence Comet %f"), CometSequence[CurrentIndexInDisplaySequence].R));
 
@@ -61,21 +56,41 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
             GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, TEXT("Congrats you destroyed all the comets in this sequence!"));
             CurrentIndexInActualSequence = 0;
 
-            CreateSequence();
-            PlaySequence();
+            NewRound();
         }
     }
     Comet->Destroy();
 }
 
+void UCometMasterComponent::NewRound()
+{
+    DestroyAllComets();
+
+    //TODO: HaNDLE ui COMET VISIBILITY FLOW 
+    UIComet->SetVisibility(false);
+    FTimerDelegate NewRoundTimerCallback;
+    NewRoundTimerCallback.BindLambda([this]
+    {
+        CreateSequence();
+        PlaySequence();
+    });
+
+    GetWorld()->GetTimerManager().SetTimer(RoundWaitTimeHandle, NewRoundTimerCallback, TimeBetweenRounds, false);
+
+
+}
+
 void UCometMasterComponent::DestroyAllComets()
 {
+    GetWorld()->GetTimerManager().ClearTimer(CometSpawnerHandle);
+
     for (AComet* Comet : SpawnedComets)
     {
         Comet->Destroy();
     }
 
     SpawnedComets.Empty();
+
 }
 
 
@@ -121,6 +136,9 @@ void UCometMasterComponent::CreateSequence()
         }
     }
 
+    UIComet->SetVisibility(true);
+
+
 }
 
 void UCometMasterComponent::PlaySequence()
@@ -129,6 +147,9 @@ void UCometMasterComponent::PlaySequence()
     if (CurrentIndexInDisplaySequence == CometSequence.Num())
     {
         CurrentIndexInDisplaySequence = 0;
+
+        //Once sequence is finished playing we start spawning comets
+        SpawnComet();
     }
 
     else
