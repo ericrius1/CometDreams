@@ -22,7 +22,15 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
 void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
+    CurrentNumCometsInSequence = StartingNumCometsInSequence;
 
+
+}
+
+void UCometMasterComponent::Reset()
+{
+
+    NewRound();
 }
 
 void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
@@ -34,7 +42,7 @@ void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
 
 void UCometMasterComponent::IncreaseDifficulty()
 {
-    NumCometsInSequence++;
+    CurrentNumCometsInSequence++;
 }
 
 void UCometMasterComponent::DestroyComet(AActor* Comet)
@@ -120,7 +128,7 @@ void UCometMasterComponent::CreateSequence()
     {
         int PreviousColorIndex = -1;
         int ColorIndex = -1;
-        for (int i = 0; i < NumCometsInSequence; i++)
+        for (int i = 0; i < CurrentNumCometsInSequence; i++)
         {
 
             while (ColorIndex == PreviousColorIndex)

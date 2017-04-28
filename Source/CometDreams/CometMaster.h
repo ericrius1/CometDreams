@@ -43,6 +43,7 @@ private:
 
     UMaterialInstanceDynamic* UICometMaterial;
 
+    int CurrentNumCometsInSequence;
 
     int CurrentIndexInDisplaySequence;
 
@@ -55,6 +56,8 @@ private:
 public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+    
+    void Reset();
 
     UFUNCTION()
         void SetupUIComet(UStaticMeshComponent* InUIComet);
@@ -96,7 +99,7 @@ public:
 
     /* How many comets the player needs to memorize and destroy in correct order */
     UPROPERTY(EditAnywhere, Category = "Comet")
-        int NumCometsInSequence = 2;
+        int StartingNumCometsInSequence = 2;
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         float SpawnIntervalTime = 2.0f;

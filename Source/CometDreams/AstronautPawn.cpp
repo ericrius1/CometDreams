@@ -73,6 +73,9 @@ void AAstronautPawn::BeginPlay()
 	StartingCursorColor = CursorColorCurve->GetLinearColorValue(0.0);
 	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
+    CometMaster->SetupUIComet(UIComet);
+
+
 
 }
 // Called every frame
@@ -98,20 +101,16 @@ void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AAstronautPawn::ResetGame()
 {   
-    CometMaster->NewRound();
-
-
+    DifficultyLevel = 0;
+    CometMaster->Reset();
 
 }
 
 void AAstronautPawn::IncreaseDifficulty()
 {
-    if (DifficultyLevel == 0)
-    {
-        CometMaster->SetupUIComet(UIComet);
-    }
     CometMaster->IncreaseDifficulty();
-    ResetGame();
+    CometMaster->NewRound();
+
     DifficultyLevel++;
 }
 
