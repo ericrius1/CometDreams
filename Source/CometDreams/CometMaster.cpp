@@ -61,7 +61,10 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     if (Color.Equals(CometSequence[CurrentIndexInActualSequence]))
     {
         // We destroyed the correct comet!
+
         CorrectCometAudioComponent->Play();
+        CurrentPitch += PitchIncrement;
+        CorrectCometAudioComponent->SetFloatParameter(FName("pitch"), CurrentPitch);
         GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Destroyed Right Comet!!"));
         CurrentIndexInActualSequence++;
         if (CurrentIndexInActualSequence == CometSequence.Num())
@@ -79,7 +82,9 @@ void UCometMasterComponent::NewRound()
 {
     DestroyAllComets();
 
-    //TODO: HaNDLE ui COMET VISIBILITY FLOW 
+    CurrentPitch = StartingPitch;
+
+
     UIComet->SetVisibility(false);
     FTimerDelegate NewRoundTimerCallback;
     NewRoundTimerCallback.BindLambda([this]

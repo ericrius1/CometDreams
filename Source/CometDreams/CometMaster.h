@@ -50,6 +50,10 @@ private:
     //Where are we in terms of which comets have actually been destroyed?
     int CurrentIndexInActualSequence;
 
+    float StartingPitch = 1.0f;
+
+    float CurrentPitch = StartingPitch;
+
 
 
 
@@ -114,6 +118,8 @@ public:
     UPROPERTY(EditAnywhere, Category = "Comet")
         UAudioComponent* CorrectCometAudioComponent;
 
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        float PitchIncrement = 0.2f;
 
 
 };
