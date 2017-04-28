@@ -22,7 +22,6 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
 void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
-    SpawnComet();
 
 }
 
@@ -66,6 +65,16 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     Comet->Destroy();
 }
 
+void UCometMasterComponent::DestroyAllComets()
+{
+    for (AComet* Comet : SpawnedComets)
+    {
+        Comet->Destroy();
+    }
+
+    SpawnedComets.Empty();
+}
+
 void UCometMasterComponent::SpawnComet()
 {
     if (CometBP)
@@ -77,8 +86,8 @@ void UCometMasterComponent::SpawnComet()
 
         int ColorIndex = FMath::Rand() % CometColors.Num();
         NewComet->ChangeMaterial(CometColors[ColorIndex]);
-
-       GetWorld()->GetTimerManager().SetTimer(CometSpawnerHandle, this, &UCometMasterComponent::SpawnComet, SpawnIntervalTime, true);
+        SpawnedComets.Add(NewComet);
+        GetWorld()->GetTimerManager().SetTimer(CometSpawnerHandle, this, &UCometMasterComponent::SpawnComet, SpawnIntervalTime, true);
 
     }
 }

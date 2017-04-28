@@ -27,7 +27,8 @@ protected:
     UFUNCTION()
         void PlaySequence();
 
-
+    UFUNCTION()
+        void SpawnComet();
 
 
         UStaticMeshComponent* UIComet;
@@ -36,8 +37,6 @@ protected:
 
 private:
     TArray<FLinearColor> CometSequence;
-
-    TArray<AComet*> SpawnedComets;
 
     FTimerHandle SequenceTimerHandle;
 
@@ -52,8 +51,6 @@ private:
     int CurrentIndexInActualSequence;
 
 
-
-
 public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -62,13 +59,7 @@ public:
         void SetupUIComet(UStaticMeshComponent* InUIComet);
     
     UFUNCTION()
-        void SpawnComet();
-
-    UFUNCTION()
         void DestroyComet(AActor* Comet);
-
-    UFUNCTION()
-        void DestroyAllComets();
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         TArray<FLinearColor> CometColors;

@@ -50,6 +50,7 @@ void AAstronautPawn::BeginPlay()
 
 	Super::BeginPlay();
 
+    CometMasterComponent->SetupUIComet(UIComet);
 
 	// Initialize Timeline
 		/* Contains the signature of the function that is going to
@@ -92,29 +93,8 @@ void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	InputComponent->BindAction("Increase Difficulty", IE_Pressed, this, &AAstronautPawn::IncreaseDifficulty);
+	//InputComponent->BindAction("Fire", IE_Pressed, this, &AAstronautPawn::Fire);
 
-}
-
-void AAstronautPawn::ResetGame()
-{   
-    CometMasterComponent->DestroyAllComets();
-}
-
-void AAstronautPawn::IncreaseDifficulty()
-{
-    if (DifficultyLevel == 0)
-    {
-        CometMasterComponent->SetupUIComet(UIComet);
-        CometMasterComponent->SpawnComet();
-    }
-
-    else 
-    {
-        ResetGame();
-    }
-
-    DifficultyLevel++;
 }
 
 void AAstronautPawn::GazeCheck()

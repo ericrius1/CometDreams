@@ -82,8 +82,6 @@ public:
 
 	void Fire();
 
-    void IncreaseDifficulty();
-
 	bool bFiring;
 
 
@@ -102,18 +100,11 @@ private:
 	UFUNCTION()
 		void DeactivateLaser();
 
-    UFUNCTION()
-        void ResetGame();
-
 	AActor* TargetedComet = nullptr;
 
 	FTimerHandle ShowLaserTimerHandler;
 
 	FLinearColor StartingCursorColor;
-
-
-    // 0 Difficulty means game hasn't started yet
-    int DifficultyLevel = 0;
 
 
 
