@@ -9,7 +9,7 @@ AComet::AComet()
 {
     RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Scene Component"));
 
-    CometMesh = CreateDefaultSubobject<UDestructibleComponent>(TEXT("Comet Mesh"));
+    CometMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Comet Mesh"));
     CometMesh->AttachToComponent(RootSceneComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 }
@@ -32,7 +32,7 @@ void AComet::ChangeMaterial(FLinearColor NewColor)
 
 void AComet::TakeHit()
 {
-    CometMesh->ApplyRadiusDamage(10.0f, CometMesh->GetComponentLocation(), 100.0f, 10.0f, true);
+    Destroy();
 }
 
 
