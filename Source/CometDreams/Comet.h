@@ -27,7 +27,8 @@ public:
 
 
     UPROPERTY(VisibleAnywhere, Category = "Comet")
-        UStaticMeshComponent* CometMesh;
+        UDestructibleComponent* CometMesh;
+
 
 
     UFUNCTION()

@@ -9,7 +9,7 @@ AComet::AComet()
 {
     RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Scene Component"));
 
-    CometMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Comet Mesh"));
+    CometMesh = CreateDefaultSubobject<UDestructibleComponent>(TEXT("Comet Mesh"));
     CometMesh->AttachToComponent(RootSceneComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 }
