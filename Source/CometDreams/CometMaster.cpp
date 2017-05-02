@@ -118,7 +118,7 @@ void UCometMasterComponent::SpawnComet()
     {
         FActorSpawnParameters SpawnParams;
         FTransform CometSpawnPoint = GetOwner()->GetTransform();
-        CometSpawnPoint.AddToTranslation(FVector(100, FMath::RandRange(-25, 25), FMath::RandRange(-25, 25)));
+        CometSpawnPoint.AddToTranslation(FVector(ForwardSpawnDistanceFromPlayer, FMath::RandRange(-25, 25), FMath::RandRange(-25, 25)));
         AComet* NewComet = GetWorld()->SpawnActor<AComet>(CometBP, CometSpawnPoint, SpawnParams);
 
         int ColorIndex = FMath::Rand() % CometColors.Num();

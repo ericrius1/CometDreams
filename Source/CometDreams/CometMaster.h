@@ -108,6 +108,9 @@ public:
     UPROPERTY(EditAnywhere, Category = "Comet")
         float SpawnIntervalTime = 2.0f;
 
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        float ForwardSpawnDistanceFromPlayer = 100.0f;
+
 
     UPROPERTY(EditAnywhere, Category = "Timing")
         float TimeBetweenRounds = 3.0f;
