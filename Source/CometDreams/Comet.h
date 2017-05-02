@@ -29,6 +29,8 @@ public:
     UPROPERTY(VisibleAnywhere, Category = "Comet")
         UDestructibleComponent* CometMesh;
 
+    UFUNCTION()
+        void TakeHit();
 
 
     UFUNCTION()

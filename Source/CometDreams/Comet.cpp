@@ -30,3 +30,10 @@ void AComet::ChangeMaterial(FLinearColor NewColor)
     CometMaterial->SetVectorParameterValue(FName("Comet Color"), NewColor);
 }
 
+void AComet::TakeHit()
+{
+    CometMesh->ApplyRadiusDamage(10.0f, CometMesh->GetComponentLocation(), 100.0f, 10.0f, true);
+}
+
+
+

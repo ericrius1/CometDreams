@@ -74,7 +74,9 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
             NewRound();
         }
     }
-    Comet->Destroy();
+   // Comet->Destroy();
+    CometToCheck->TakeHit();
+
 }
 
 void UCometMasterComponent::NewRound()
