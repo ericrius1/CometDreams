@@ -12,6 +12,7 @@ AComet::AComet()
     CometMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Comet Mesh"));
     CometMesh->AttachToComponent(RootSceneComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
+
 }
 
 // Called when the game starts or when spawned
@@ -32,7 +33,9 @@ void AComet::ChangeMaterial(FLinearColor NewColor)
 
 void AComet::TakeHit()
 {
+    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, CometMesh->GetRelativeTransform(), true);
     Destroy();
+    
 }
 
 

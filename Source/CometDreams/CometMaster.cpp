@@ -53,9 +53,7 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     FLinearColor Color;
     CometToCheck->CometMesh->GetMaterial(0)->GetVectorParameterValue(CometColorParameterName, Color);
 
-    GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Targeted Comet %f"), Color.R));
-    GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, FString::Printf(TEXT("Sequence Comet %f"), CometSequence[CurrentIndexInDisplaySequence].R));
-
+        
 
     if (Color.Equals(CometSequence[CurrentIndexInActualSequence]))
     {

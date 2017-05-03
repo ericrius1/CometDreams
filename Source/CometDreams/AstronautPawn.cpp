@@ -108,6 +108,13 @@ void AAstronautPawn::ResetGame()
 
 void AAstronautPawn::IncreaseDifficulty()
 {
+    if (DifficultyLevel == 0)
+    {
+        UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition(0, EOrientPositionSelector::OrientationAndPosition);
+
+    }
+    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("SHNUUUUR"));
+
     CometMaster->IncreaseDifficulty();
     CometMaster->NewRound();
 

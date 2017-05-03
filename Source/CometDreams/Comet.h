@@ -25,6 +25,8 @@ public:
     UPROPERTY()
         USceneComponent* RootSceneComponent;
 
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        UParticleSystem* Explosion;
 
     UPROPERTY(VisibleAnywhere, Category = "Comet")
         UStaticMeshComponent* CometMesh;
