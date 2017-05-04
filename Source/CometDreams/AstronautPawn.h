@@ -45,7 +45,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UCurveLinearColor* CursorColorCurve;
 
-	UPROPERTY(EditAnywhere, Category = "Firing")
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		UAudioComponent*  LaserChargeSound;
 
     UPROPERTY(EditAnywhere, Category = "Firing")
@@ -113,6 +113,12 @@ private:
     FTimerHandle NewRoundWaitTimeHandler;
 
 	FLinearColor StartingCursorColor;
+
+    FDateTime MyDateTime;
+
+    float CurrentTime;
+
+    float PreviousTime;
 
 
     // 0 Difficulty means game hasn't started yet
