@@ -7,6 +7,14 @@
 #include "CometMaster.generated.h"
 
 
+UENUM(BlueprintType)
+enum class EGameState : uint8
+{
+    AnyComet      UMETA(DisplayName = "Any Comet"),
+    SpecificComet UMETA(DisplayName = "Specific Comet"),
+    CometSequence UMETA(DisplayName = "Comet Sequence")
+};
+
 UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class COMETDREAMS_API UCometMasterComponent : public USceneComponent
 {
@@ -48,7 +56,10 @@ private:
 public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-    
+
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+        EGameState GameState = EGameState::AnyComet;
 
     UFUNCTION()
         void SetupUIComet(UStaticMeshComponent* InUIComet);
