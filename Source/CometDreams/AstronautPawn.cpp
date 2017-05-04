@@ -28,9 +28,6 @@ AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
 	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Laser Effect"));
 	Laser->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
- 
-
-
 
 	Cursor = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Cursor"));
 	Cursor->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
@@ -50,6 +47,8 @@ void AAstronautPawn::BeginPlay()
 
 	Super::BeginPlay();
 
+    CurrentTime = MyDateTime.UtcNow().ToUnixTimestamp();
+    PreviousTime = CurrentTime;
 
 	// Initialize Timeline
 		/* Contains the signature of the function that is going to
@@ -75,19 +74,32 @@ void AAstronautPawn::BeginPlay()
 
     CometMaster->SetupUIComet(UIComet);
 
-
-
 }
 // Called every frame
 void AAstronautPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+
+    CurrentTime = MyDateTime.UtcNow().ToUnixTimestamp();
+
+    if (CurrentTime - PreviousTime > 3.0f)
+    {
+        // Headset had just been put on 
+        UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition(0, EOrientPositionSelector::OrientationAndPosition);
+        for (int i = 0; i < 100; i++)
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("SHNUUUR"));
+
+        }
+    }
+    
 	GazeCheck();
 
 	ChargingTimeline.TickTimeline(DeltaTime);
 
-
+    PreviousTime = CurrentTime;
 }
 
 // Called to bind functionality to input
@@ -108,12 +120,7 @@ void AAstronautPawn::ResetGame()
 
 void AAstronautPawn::IncreaseDifficulty()
 {
-    if (DifficultyLevel == 0)
-    {
-        UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition(0, EOrientPositionSelector::OrientationAndPosition);
-
-    }
-    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("SHNUUUUR"));
+ 
 
     CometMaster->IncreaseDifficulty();
     CometMaster->NewRound();
