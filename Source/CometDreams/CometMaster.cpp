@@ -25,8 +25,6 @@ void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
 
-    //UI Comet should be invisible until the player destroys a comet
-    UIComet->SetVisibility(false);
 
     CurrentCometSpeed = StartingCometSpeed;
     CorrectCometAudioComponent->SetSound(CorrectCometSound);
@@ -38,6 +36,10 @@ void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
     UIComet = InUIComet;
     UICometMaterial = UMaterialInstanceDynamic::Create(UIComet->GetMaterial(0), this);
     UIComet->SetMaterial(0, UICometMaterial);
+
+
+    //UI Comet should be invisible until the player destroys a comet
+    UIComet->SetVisibility(false);
 }
 
 void UCometMasterComponent::IncreaseDifficulty()
