@@ -12,8 +12,6 @@ AComet::AComet() :
 
     CometMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Comet Mesh"));
     CometMesh->AttachToComponent(RootSceneComponent, FAttachmentTransformRules::KeepRelativeTransform);
-
-
 }
 
 // Called when the game starts or when spawned

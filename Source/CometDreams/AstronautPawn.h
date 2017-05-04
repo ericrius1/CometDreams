@@ -116,8 +116,6 @@ private:
 	UFUNCTION()
 		void DeactivateLaser();
 
-    UFUNCTION()
-        void ResetGame();
 
 	AActor* TargetedComet = nullptr;
 

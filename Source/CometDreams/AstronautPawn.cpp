@@ -52,9 +52,8 @@ void AAstronautPawn::BeginPlay()
     CurrentTime = MyDateTime.UtcNow().ToUnixTimestamp();
     PreviousTime = CurrentTime;
 
-	// Initialize Timeline
-		/* Contains the signature of the function that is going to
-		execute every time we tick our timeline. Think of this like a delegate*/
+	/* Contains the signature of the function that is going to
+	execute every time we tick our timeline. Think of this like a delegate*/
 	FOnTimelineFloat ProgressFunction;
 
 	/* Contains the signature of the function that is going to
@@ -93,7 +92,6 @@ void AAstronautPawn::Tick(float DeltaTime)
     {
         // Headset had just been put on 
         UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition(0, EOrientPositionSelector::OrientationAndPosition);
-    
     }
     
 	GazeCheck();
@@ -112,19 +110,12 @@ void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
-void AAstronautPawn::ResetGame()
-{   
-    DifficultyLevel = 0;
-    CometMaster->Reset();
-
-}
 
 void AAstronautPawn::IncreaseDifficulty()
 {
  
-
     CometMaster->IncreaseDifficulty();
-    CometMaster->NewRound();
+    CometMaster->SpawnComet();
 
     DifficultyLevel++;
 }

@@ -23,19 +23,12 @@ protected:
     void ChangeColorUIComet(FLinearColor NewColor);
 
 
-
-
-
     UStaticMeshComponent* UIComet;
 
     //TODO : Write spawn comet method and keep track of when player has successfully destroyed comets in right order
 
 private:
-    TArray<FLinearColor> CometSequence;
 
-    TArray<AComet*> SpawnedComets;
-
-    FTimerHandle SequenceTimerHandle;
 
     FTimerHandle CometSpawnerHandle;
 
@@ -43,16 +36,9 @@ private:
 
     UMaterialInstanceDynamic* UICometMaterial;
 
-    int CurrentNumCometsInSequence;
 
-    int CurrentIndexInDisplaySequence;
 
-    //Where are we in terms of which comets have actually been destroyed?
-    int CurrentIndexInActualSequence;
 
-    float StartingPitch = 1.0f;
-
-    float CurrentPitch = StartingPitch;
 
     float CurrentCometSpeed;
 
@@ -63,7 +49,6 @@ public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
     
-    void Reset();
 
     UFUNCTION()
         void SetupUIComet(UStaticMeshComponent* InUIComet);
@@ -75,19 +60,8 @@ public:
         void DestroyComet(AActor* Comet);
 
     UFUNCTION()
-        void DestroyAllComets();
-
-    UFUNCTION()
-        void CreateSequence();
-
-    UFUNCTION()
-        void PlaySequence();
-
-    UFUNCTION()
         void IncreaseDifficulty();
 
-    UFUNCTION()
-        void NewRound();
 
 
     UPROPERTY(EditAnywhere, Category = "Comet")
@@ -96,16 +70,12 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "Comet")
         FName CometColorParameterName;
 
-    UPROPERTY(EditDefaultsOnly, Category = "Comet")
-        float TimeBetweenSequenceItems;
 
     /* Blueprint Reference of Comet Class*/
     UPROPERTY(EditAnywhere, Category = "Comet")
         TSubclassOf<AComet> CometBP;
 
-    /* How many comets the player needs to memorize and destroy in correct order */
-    UPROPERTY(EditAnywhere, Category = "Comet")
-        int StartingNumCometsInSequence = 2;
+
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         float SpawnIntervalTime = 2.0f;
@@ -126,8 +96,6 @@ public:
     UPROPERTY(EditAnywhere, Category = "Comet")
         UAudioComponent* CorrectCometAudioComponent;
 
-    UPROPERTY(EditAnywhere, Category = "Comet")
-        float PitchIncrement = 0.2f;
 
     UPROPERTY(EditAnywhere, Category = "Difficulty")
         float StartingCometSpeed;
