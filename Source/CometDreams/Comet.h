@@ -38,6 +38,12 @@ public:
     UFUNCTION()
         void ChangeMaterial(FLinearColor NewColor);
 
+    UFUNCTION()
+        void SetSpeed(float NewSpeed);
+
+    float Speed;
+
+
   
 
 private:

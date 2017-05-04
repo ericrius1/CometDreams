@@ -54,6 +54,8 @@ private:
 
     float CurrentPitch = StartingPitch;
 
+    float CurrentCometSpeed;
+
 
 
 
@@ -126,6 +128,12 @@ public:
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         float PitchIncrement = 0.2f;
+
+    UPROPERTY(EditAnywhere, Category = "Difficulty")
+        float StartingCometSpeed;
+
+    UPROPERTY(EditAnywhere, Category = "Difficulty")
+        float DifficultyIncrementCometSpeed;
 
 
 };

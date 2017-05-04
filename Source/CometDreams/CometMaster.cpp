@@ -9,7 +9,9 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     Super(OI),
     CurrentIndexInDisplaySequence(0),
     CurrentIndexInActualSequence(0),
-    TimeBetweenSequenceItems(2.0f)
+    TimeBetweenSequenceItems(2.0f),
+    StartingCometSpeed(10.0f),
+    DifficultyIncrementCometSpeed(5.0f)
 {   
     // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
@@ -17,6 +19,7 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
 
     CorrectCometAudioComponent = OI.CreateDefaultSubobject<UAudioComponent>(this, TEXT("Correct Comet Audio Component"));
     CorrectCometAudioComponent->SetupAttachment(this);
+
 }
 
 
@@ -24,6 +27,8 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
 void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
+
+    CurrentCometSpeed = StartingCometSpeed;
     CorrectCometAudioComponent->SetSound(CorrectCometSound);
     CurrentNumCometsInSequence = StartingNumCometsInSequence;
 
@@ -44,7 +49,7 @@ void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
 
 void UCometMasterComponent::IncreaseDifficulty()
 {
-    CurrentNumCometsInSequence++;
+    CurrentCometSpeed += DifficultyIncrementCometSpeed;
 }
 
 void UCometMasterComponent::DestroyComet(AActor* Comet)
@@ -118,6 +123,7 @@ void UCometMasterComponent::SpawnComet()
         FTransform CometSpawnPoint = GetOwner()->GetTransform();
         CometSpawnPoint.AddToTranslation(FVector(ForwardSpawnDistanceFromPlayer, FMath::RandRange(-25, 25), FMath::RandRange(-25, 25)));
         AComet* NewComet = GetWorld()->SpawnActor<AComet>(CometBP, CometSpawnPoint, SpawnParams);
+        NewComet->SetSpeed(CurrentCometSpeed);
 
         int ColorIndex = FMath::Rand() % CometColors.Num();
         NewComet->ChangeMaterial(CometColors[ColorIndex]);

@@ -5,7 +5,8 @@
 
 
 // Sets default values
-AComet::AComet()
+AComet::AComet() :
+    Speed (-10.0f)
 {
     RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Scene Component"));
 
@@ -24,11 +25,17 @@ void AComet::BeginPlay()
     CometMaterial = UMaterialInstanceDynamic::Create(CometMesh->GetMaterial(0), this);
     CometMesh->SetMaterial(0, CometMaterial);
 
+
 }
 
 void AComet::ChangeMaterial(FLinearColor NewColor)
 {
     CometMaterial->SetVectorParameterValue(FName("Comet Color"), NewColor);
+}
+
+void AComet::SetSpeed(float NewSpeed)
+{
+    CometMesh->SetPhysicsLinearVelocity(FVector(-NewSpeed, 0, 0));
 }
 
 void AComet::TakeHit()
