@@ -7,9 +7,6 @@
 // Sets default values for this component's properties
 UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     Super(OI),
-    CurrentIndexInDisplaySequence(0),
-    CurrentIndexInActualSequence(0),
-    TimeBetweenSequenceItems(2.0f),
     StartingCometSpeed(10.0f),
     DifficultyIncrementCometSpeed(5.0f)
 {   
@@ -28,16 +25,12 @@ void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
 
+    //UI Comet should be invisible until the player destroys a comet
+    UIComet->SetVisibility(false);
+
     CurrentCometSpeed = StartingCometSpeed;
     CorrectCometAudioComponent->SetSound(CorrectCometSound);
-    CurrentNumCometsInSequence = StartingNumCometsInSequence;
 
-}
-
-void UCometMasterComponent::Reset()
-{
-    CurrentNumCometsInSequence = StartingNumCometsInSequence;
-    NewRound();
 }
 
 void UCometMasterComponent::SetupUIComet(UStaticMeshComponent* InUIComet)
@@ -55,62 +48,7 @@ void UCometMasterComponent::IncreaseDifficulty()
 void UCometMasterComponent::DestroyComet(AActor* Comet)
 {
     AComet* CometToCheck = Cast<AComet>(Comet);
-    FLinearColor Color;
-    CometToCheck->CometMesh->GetMaterial(0)->GetVectorParameterValue(CometColorParameterName, Color);
-
-        
-
-    if (Color.Equals(CometSequence[CurrentIndexInActualSequence]))
-    {
-        // We destroyed the correct comet!
-
-        CorrectCometAudioComponent->Play();
-        CurrentPitch += PitchIncrement;
-        CorrectCometAudioComponent->SetFloatParameter(FName("pitch"), CurrentPitch);
-        GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Destroyed Right Comet!!"));
-        CurrentIndexInActualSequence++;
-        if (CurrentIndexInActualSequence == CometSequence.Num())
-        {
-            GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Yellow, TEXT("Congrats you destroyed all the comets in this sequence!"));
-            CurrentIndexInActualSequence = 0;
-            UGameplayStatics::PlaySound2D(this, RoundCompleteSound);
-            NewRound();
-        }
-    }
     CometToCheck->TakeHit();
-
-}
-
-void UCometMasterComponent::NewRound()
-{
-    DestroyAllComets();
-
-    CurrentPitch = StartingPitch;
-
-
-    UIComet->SetVisibility(false);
-    FTimerDelegate NewRoundTimerCallback;
-    NewRoundTimerCallback.BindLambda([this]
-    {
-        CreateSequence();
-        PlaySequence();
-    });
-
-    GetWorld()->GetTimerManager().SetTimer(RoundWaitTimeHandle, NewRoundTimerCallback, TimeBetweenRounds, false);
-
-
-}
-
-void UCometMasterComponent::DestroyAllComets()
-{
-    GetWorld()->GetTimerManager().ClearTimer(CometSpawnerHandle);
-
-    for (AComet* Comet : SpawnedComets)
-    {
-        Comet->Destroy();
-    }
-
-    SpawnedComets.Empty();
 
 }
 
@@ -127,63 +65,9 @@ void UCometMasterComponent::SpawnComet()
 
         int ColorIndex = FMath::Rand() % CometColors.Num();
         NewComet->ChangeMaterial(CometColors[ColorIndex]);
-        SpawnedComets.Add(NewComet);
         GetWorld()->GetTimerManager().SetTimer(CometSpawnerHandle, this, &UCometMasterComponent::SpawnComet, SpawnIntervalTime, true);
 
     }
-}
-
-// Create a sequence of comets to be destroyed out of available colors that the player needs to remember
-void UCometMasterComponent::CreateSequence()
-{
-    CurrentIndexInDisplaySequence = 0;
-    CometSequence.Empty();
-    if (CometColors.Num() > 0)
-    {
-        int PreviousColorIndex = -1;
-        int ColorIndex = -1;
-        for (int i = 0; i < CurrentNumCometsInSequence; i++)
-        {
-
-            while (ColorIndex == PreviousColorIndex)
-            {
-                // Ensures the next comet in the sequence has a different color than the last.
-                ColorIndex = FMath::Rand() % CometColors.Num();
-            }
-
-            CometSequence.Add(CometColors[ColorIndex]);
-
-            PreviousColorIndex = ColorIndex;
-
-        }
-    }
-
-    UIComet->SetVisibility(true);
-
-
-}
-
-void UCometMasterComponent::PlaySequence()
-{
-    GetWorld()->GetTimerManager().ClearTimer(SequenceTimerHandle);
-    if (CurrentIndexInDisplaySequence == CometSequence.Num())
-    {
-        CurrentIndexInDisplaySequence = 0;
-
-        //Once sequence is finished playing we start spawning comets and make ui comet invisible
-        UIComet->SetVisibility(false);
-        SpawnComet();
-    }
-
-    else
-    {
-        ChangeColorUIComet(CometSequence[CurrentIndexInDisplaySequence]);
-        CurrentIndexInDisplaySequence++;
-
-        GetWorld()->GetTimerManager().SetTimer(SequenceTimerHandle, this, &UCometMasterComponent::PlaySequence, TimeBetweenSequenceItems, false);
-
-    }
-
 }
 
 void UCometMasterComponent::ChangeColorUIComet(FLinearColor NewColor)
@@ -197,7 +81,5 @@ void UCometMasterComponent::ChangeColorUIComet(FLinearColor NewColor)
 void UCometMasterComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-    // ...
 }
 
