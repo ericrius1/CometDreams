@@ -3,6 +3,8 @@
 #include "CometDreams.h"
 #include "AstronautPawn.h"
 
+//TODO: Shift all curve logic to be time 0 to 1 and get values based on that
+
 
 // Sets default values
 AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
@@ -72,6 +74,9 @@ void AAstronautPawn::BeginPlay()
 	StartingCursorColor = CursorColorCurve->GetLinearColorValue(0.0);
 	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
+    StartingCursorSize = CursorSizeCurve->GetFloatValue(0.0);
+    Cursor->SetVectorParameter(FName("CursorSize"), FVector(StartingCursorSize));
+
     CometMaster->SetupUIComet(UIComet);
 
 }
@@ -84,21 +89,17 @@ void AAstronautPawn::Tick(float DeltaTime)
 
     CurrentTime = MyDateTime.UtcNow().ToUnixTimestamp();
 
-    if (CurrentTime - PreviousTime > 3.0f)
+    if (CurrentTime - PreviousTime > PauseTimeNeededToTriggerHMDReset)
     {
         // Headset had just been put on 
         UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition(0, EOrientPositionSelector::OrientationAndPosition);
-        for (int i = 0; i < 100; i++)
-        {
-            GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("SHNUUUR"));
-
-        }
+    
     }
     
 	GazeCheck();
 
 	ChargingTimeline.TickTimeline(DeltaTime);
-
+     
     PreviousTime = CurrentTime;
 }
 
@@ -179,6 +180,7 @@ void AAstronautPawn::GazeCheck()
 		LaserChargeSound->Stop();
 
 		Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
+        Cursor->SetVectorParameter(FName("CursorSize"), FVector(StartingCursorSize));
 
 	}
 
@@ -205,8 +207,12 @@ void AAstronautPawn::Fire()
 void AAstronautPawn::HandleChargingProgress(float value)
 {
 
-	FLinearColor CurrentCursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition());
-	Cursor->SetColorParameter(FName("CursorColor"), CurrentCursorColor);
+    // Divide by value of charge curve to get correct value for any other curve
+	FLinearColor CurrentCursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition() / LaserChargeTime);
+    Cursor->SetColorParameter(FName("CursorColor"), CurrentCursorColor);
+
+    float CurrentCursorSize = CursorSizeCurve->GetFloatValue(ChargingTimeline.GetPlaybackPosition() / LaserChargeTime);
+    Cursor->SetVectorParameter(FName("CursorSize"), FVector(CurrentCursorSize));
 
 }
 

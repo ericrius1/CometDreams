@@ -45,6 +45,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UCurveLinearColor* CursorColorCurve;
 
+    /* Cursor Size Change curve reference*/
+    UPROPERTY(EditAnywhere, Category = "Firing")
+        UCurveFloat* CursorSizeCurve;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		UAudioComponent*  LaserChargeSound;
 
@@ -63,6 +67,15 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float MovementSpeed;
+
+
+    // Let user set variable charge time and just make sure to update this in charge curve when this changes,
+    // then just divide by that value
+
+    /* Time laser takes to charge and fire. Make sure this value is equal to the time of the Charge Curve*/
+    UPROPERTY(EditDefaultsOnly, Category = "Firing")
+        float LaserChargeTime = 2.0f;
+
 
 
 
@@ -114,12 +127,15 @@ private:
 
 	FLinearColor StartingCursorColor;
 
+    float StartingCursorSize;
+
     FDateTime MyDateTime;
 
     float CurrentTime;
 
     float PreviousTime;
 
+    int PauseTimeNeededToTriggerHMDReset = 2.0f;
 
     // 0 Difficulty means game hasn't started yet
     int DifficultyLevel = 0;
