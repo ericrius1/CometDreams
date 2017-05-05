@@ -9,7 +9,8 @@
 UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     Super(OI),
     StartingCometSpeed(10.0f),
-    DifficultyIncrementCometSpeed(5.0f)
+    DifficultyIncrementCometSpeed(5.0f),
+    Score(0)
 {   
     // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
@@ -47,10 +48,16 @@ void UCometMasterComponent::IncreaseDifficulty()
     CurrentCometSpeed += DifficultyIncrementCometSpeed;
 }
 
+int UCometMasterComponent::GetScore() const
+{
+    return Score;
+}
+
 void UCometMasterComponent::DestroyComet(AActor* Comet)
 {
     AComet* CometToCheck = Cast<AComet>(Comet);
     CometToCheck->TakeHit();
+    Score++;
 
     if (GameState == EGameState::AnyComet)
     {

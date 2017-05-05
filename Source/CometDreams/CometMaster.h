@@ -50,6 +50,8 @@ private:
 
     float CurrentCometSpeed;
 
+    int Score;
+
 
 
 
@@ -64,7 +66,8 @@ public:
     UFUNCTION()
         void SetupUIComet(UStaticMeshComponent* InUIComet);
 
-
+    UFUNCTION(BlueprintCallable, Category = "Score")
+        int GetScore() const;
 
 
     UFUNCTION()
