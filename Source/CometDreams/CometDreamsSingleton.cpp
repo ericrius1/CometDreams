@@ -9,4 +9,6 @@
 UCometDreamsSingleton::UCometDreamsSingleton()
 {
     GlobalEventHandler = CreateDefaultSubobject<UGlobalEventHandler>(TEXT("EventHandler"));
+
+    GlobalName = "Shnur";
 }

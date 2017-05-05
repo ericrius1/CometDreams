@@ -19,4 +19,7 @@ public:
 
     UPROPERTY(BlueprintReadOnly, Category = "Global Events")
     UGlobalEventHandler* GlobalEventHandler;
+
+    UPROPERTY(EditAnywhere, Category = "Come Dreams Singleton")
+        FString GlobalName;
 };
