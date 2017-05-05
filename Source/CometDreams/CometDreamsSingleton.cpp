@@ -10,5 +10,5 @@ UCometDreamsSingleton::UCometDreamsSingleton()
 {
     GlobalEventHandler = CreateDefaultSubobject<UGlobalEventHandler>(TEXT("EventHandler"));
 
-    GlobalName = "Shnur";
+    GlobalName = FString("Shnur");
 }
