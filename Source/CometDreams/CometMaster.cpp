@@ -52,6 +52,17 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     AComet* CometToCheck = Cast<AComet>(Comet);
     CometToCheck->TakeHit();
 
+    if (GameState == EGameState::AnyComet)
+    {
+        GameState = EGameState::SpecificComet;
+     
+
+        int ColorIndex = FMath::Rand() % CometColors.Num();
+        CurrentTargetColor = CometColors[ColorIndex];
+        UIComet->SetVisibility(true);
+        ChangeColorUIComet(CurrentTargetColor);
+    }
+
 }
 
 

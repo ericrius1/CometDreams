@@ -45,7 +45,7 @@ private:
     UMaterialInstanceDynamic* UICometMaterial;
 
 
-
+    FLinearColor CurrentTargetColor;
 
 
     float CurrentCometSpeed;
@@ -63,6 +63,9 @@ public:
 
     UFUNCTION()
         void SetupUIComet(UStaticMeshComponent* InUIComet);
+
+
+
 
     UFUNCTION()
         void SpawnComet();
