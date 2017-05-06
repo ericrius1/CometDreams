@@ -4,6 +4,8 @@
 
 #include "Components/SceneComponent.h"
 #include "Comet.h"
+#include "CometDreamsSingleton.h"
+
 #include "CometMaster.generated.h"
 
 
@@ -46,6 +48,8 @@ private:
 
 
     FLinearColor CurrentTargetColor;
+
+    UCometDreamsSingleton* CometDreamsSingletonInstance;
 
 
     float CurrentCometSpeed;

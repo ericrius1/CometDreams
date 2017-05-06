@@ -2,7 +2,6 @@
 
 #include "CometDreams.h"
 #include "CometMaster.h"
-#include "CometDreamsSingleton.h"
 
 
 // Sets default values for this component's properties
@@ -19,6 +18,7 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     CorrectCometAudioComponent = OI.CreateDefaultSubobject<UAudioComponent>(this, TEXT("Correct Comet Audio Component"));
     CorrectCometAudioComponent->SetupAttachment(this);
 
+
 }
 
 
@@ -26,6 +26,9 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
 void UCometMasterComponent::BeginPlay()
 {
     Super::BeginPlay();
+
+    CometDreamsSingletonInstance = Cast<UCometDreamsSingleton>(GEngine->GameSingleton);
+
 
     CurrentCometSpeed = StartingCometSpeed;
     CorrectCometAudioComponent->SetSound(CorrectCometSound);
@@ -58,13 +61,14 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     AComet* CometToCheck = Cast<AComet>(Comet);
     CometToCheck->TakeHit();
     Score++;
+    CometDreamsSingletonInstance->GlobalEventHandler->OnScoreIncrease.Broadcast();
+    
 
     if (GameState == EGameState::AnyComet)
     {
         GameState = EGameState::SpecificComet;
      
-        UCometDreamsSingleton* DataInstance = Cast<UCometDreamsSingleton>(GEngine->GameSingleton);
-        DataInstance->GlobalEventHandler->OnTransitionToCometSpecificMode.Broadcast();
+        CometDreamsSingletonInstance->GlobalEventHandler->OnTransitionToCometSpecificMode.Broadcast();
         int ColorIndex = FMath::Rand() % CometColors.Num();
         CurrentTargetColor = CometColors[ColorIndex];
         UIComet->SetVisibility(true);

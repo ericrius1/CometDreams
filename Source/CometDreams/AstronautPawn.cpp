@@ -192,6 +192,7 @@ void AAstronautPawn::Fire()
 	TargetedComet = nullptr;
 
 	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
+    Cursor->SetVectorParameter(FName("CursorSize"), FVector(StartingCursorSize));
 
 }
 

@@ -5,9 +5,10 @@
 #include "Components/ActorComponent.h"
 #include "GlobalEventHandler.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLevelEventDelegate_OnLevelComplete, uint8, LevelIndex);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateEventDelegate_OnTransitionToCometSpecificMode);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateEventDelegate_OnScoreIncrease);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Category = "Global Events" )
 class COMETDREAMS_API UGlobalEventHandler : public UActorComponent
@@ -19,12 +20,11 @@ public:
 	UGlobalEventHandler();
 
 
-
-    UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
-        FLevelEventDelegate_OnLevelComplete OnLevelComplete;
-
-    UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
+    UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events", meta = (DisplayName = "On Transition To Specific Comet Mode"))
         FGameStateEventDelegate_OnTransitionToCometSpecificMode OnTransitionToCometSpecificMode;
+
+    UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events", meta = (DisplayName = "On Score Increase"))
+        FGameStateEventDelegate_OnScoreIncrease OnScoreIncrease;
 
 protected:
 	// Called when the game starts
