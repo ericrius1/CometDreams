@@ -9,30 +9,30 @@
 // Sets default values
 AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
     Super(OI),
-	bLockedOntoComet(false),
-	TraceRangeForGaze(500),
-	DisplayLaserTime(0.5),
-	MovementSpeed(1)
+    bLockedOntoComet(false),
+    TraceRangeForGaze(500),
+    DisplayLaserTime(0.5),
+    MovementSpeed(1)
 {
-	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+    // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+    PrimaryActorTick.bCanEverTick = true;
 
-	RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Scene Component"));
+    RootSceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Scene Component"));
 
-	MyCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Game Camera"));
+    MyCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Game Camera"));
 
-	LaserChargeSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Charge Sound"));
-	LaserChargeSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform); 
+    LaserChargeSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Charge Sound"));
+    LaserChargeSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
-	LaserShootSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Shoot Sound"));
-	LaserShootSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+    LaserShootSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Laser Shoot Sound"));
+    LaserShootSound->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
-	Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Laser Effect"));
-	Laser->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+    Laser = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Laser Effect"));
+    Laser->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
 
-	Cursor = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Cursor"));
-	Cursor->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
+    Cursor = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Cursor"));
+    Cursor->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
 
     CometMaster = OI.CreateDefaultSubobject<UCometMasterComponent>(this, TEXT("CometMasterComponent"));
     CometMaster->AttachToComponent(MyCamera, FAttachmentTransformRules::KeepRelativeTransform);
@@ -45,33 +45,33 @@ AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
 // Called when the game starts or when spawned
 void AAstronautPawn::BeginPlay()
 {
-	checkf(ChargeCurve && CursorColorCurve, TEXT("Charge Curve and CursorColorCurve not provided in AstronaughtPawn Blueprint!!"));
+    checkf(ChargeCurve && CursorColorCurve, TEXT("Charge Curve and CursorColorCurve not provided in AstronaughtPawn Blueprint!!"));
 
-	Super::BeginPlay();
+    Super::BeginPlay();
 
     CurrentTime = MyDateTime.UtcNow().ToUnixTimestamp();
     PreviousTime = CurrentTime;
 
-	/* Contains the signature of the function that is going to
-	execute every time we tick our timeline. Think of this like a delegate*/
-	FOnTimelineFloat ProgressFunction;
+    /* Contains the signature of the function that is going to
+    execute every time we tick our timeline. Think of this like a delegate*/
+    FOnTimelineFloat ProgressFunction;
 
-	/* Contains the signature of the function that is going to
-	execute when the timeline finishes.*/
-	FOnTimelineEvent FinishFunction;
+    /* Contains the signature of the function that is going to
+    execute when the timeline finishes.*/
+    FOnTimelineEvent FinishFunction;
 
-	/* In order to bind the function to our ufunction we need to create an FName which contains the
-	name of the function we want to call every time the timeline advances*/
-	ProgressFunction.BindUFunction(this, FName("HandleChargingProgress"));
+    /* In order to bind the function to our ufunction we need to create an FName which contains the
+    name of the function we want to call every time the timeline advances*/
+    ProgressFunction.BindUFunction(this, FName("HandleChargingProgress"));
 
-	FinishFunction.BindUFunction(this, FName("HandleChargingFinish"));
+    FinishFunction.BindUFunction(this, FName("HandleChargingFinish"));
 
-	ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
+    ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
 
-	ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
+    ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
 
-	StartingCursorColor = CursorColorCurve->GetLinearColorValue(0.0);
-	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
+    StartingCursorColor = CursorColorCurve->GetLinearColorValue(0.0);
+    Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
 
     StartingCursorSize = CursorSizeCurve->GetFloatValue(0.0);
     Cursor->SetVectorParameter(FName("CursorSize"), FVector(StartingCursorSize));
@@ -82,7 +82,7 @@ void AAstronautPawn::BeginPlay()
 // Called every frame
 void AAstronautPawn::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 
 
 
@@ -93,27 +93,27 @@ void AAstronautPawn::Tick(float DeltaTime)
         // Headset had just been put on 
         UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition(0, EOrientPositionSelector::OrientationAndPosition);
     }
-    
-	GazeCheck();
 
-	ChargingTimeline.TickTimeline(DeltaTime);
-     
+    GazeCheck();
+
+    ChargingTimeline.TickTimeline(DeltaTime);
+
     PreviousTime = CurrentTime;
 }
 
 // Called to bind functionality to input
 void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+    Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	InputComponent->BindAction("Increase Difficulty", IE_Pressed, this, &AAstronautPawn::IncreaseDifficulty);
+    InputComponent->BindAction("Increase Difficulty", IE_Pressed, this, &AAstronautPawn::IncreaseDifficulty);
 
 }
 
 
 void AAstronautPawn::IncreaseDifficulty()
 {
- 
+
     CometMaster->IncreaseDifficulty();
     CometMaster->SpawnComet();
 
@@ -122,78 +122,72 @@ void AAstronautPawn::IncreaseDifficulty()
 
 void AAstronautPawn::GazeCheck()
 {
-	FHitResult HitResult;
+    FHitResult HitResult;
 
 
-	const FName TraceTag("MyTraceTag");
-	GetWorld()->DebugDrawTraceTag = TraceTag;
-	FCollisionQueryParams CollisionParams;
-	CollisionParams.TraceTag = TraceTag;
+    const FName TraceTag("MyTraceTag");
+    GetWorld()->DebugDrawTraceTag = TraceTag;
+    FCollisionQueryParams CollisionParams;
+    CollisionParams.TraceTag = TraceTag;
 
 
 
-	auto StartLocation = MyCamera->K2_GetComponentLocation();
-	auto EndLocation = StartLocation + (MyCamera->GetForwardVector() * TraceRangeForGaze);
-	if (GetWorld()->LineTraceSingleByChannel(
-		HitResult,
-		StartLocation,
-		EndLocation,
-		ECollisionChannel::ECC_Visibility)
-		//CollisionParams)
-		)
-	{
-
+    auto StartLocation = MyCamera->K2_GetComponentLocation();
+    auto EndLocation = StartLocation + (MyCamera->GetForwardVector() * TraceRangeForGaze);
+    if ( GetWorld()->LineTraceSingleByChannel(
+        HitResult,
+        StartLocation,
+        EndLocation,
+        ECollisionChannel::ECC_Visibility) && HitResult.Actor->Tags.Contains("Comet"))
+    {
         //GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Gaze collision!!")));
-		if (HitResult.Actor->Tags.Contains("Comet"))
-		{
-			if (!TargetedComet)
-			{
-				// We've locked onto a new comet after gazing into empty space
-				//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("We are locked on to comet %s"), *HitResult.Actor.Get()->GetName()));
-				bLockedOntoComet = true;
-				LaserChargeSound->Play();
 
-				ChargingTimeline.PlayFromStart();
-			}
+        if (!TargetedComet)
+        {
+            // We've locked onto a new comet after gazing into empty space
+            //GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("We are locked on to comet %s"), *HitResult.Actor.Get()->GetName()));
+            bLockedOntoComet = true;
+            LaserChargeSound->Play();
 
-			// Either way we set a new targeted comet
-			TargetedComet = HitResult.Actor.Get();
+            ChargingTimeline.PlayFromStart();
+        }
 
-		}
-	}
+        // Either way we set a new targeted comet
+        TargetedComet = HitResult.Actor.Get();
+    }
 
-	// We were locked onto comet and now we looked away from it into space
-	else if (bLockedOntoComet) {
-		bLockedOntoComet = false;
+    // We were locked onto comet and now we looked away from it into space or some other non comet object
+    else if (bLockedOntoComet) {
+        bLockedOntoComet = false;
 
-		ChargingTimeline.Stop();
+        ChargingTimeline.Stop();
 
-		TargetedComet = nullptr;
+        TargetedComet = nullptr;
 
-		LaserChargeSound->Stop();
+        LaserChargeSound->Stop();
 
-		Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
+        Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
         Cursor->SetVectorParameter(FName("CursorSize"), FVector(StartingCursorSize));
 
-	}
+    }
 
 }
 
 void AAstronautPawn::Fire()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Fire Laser!!"));
-	bLockedOntoComet = false;
+    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Fire Laser!!"));
+    bLockedOntoComet = false;
 
-	Laser->ActivateSystem();
+    Laser->ActivateSystem();
 
-	LaserShootSound->Play();
+    LaserShootSound->Play();
 
-	GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
+    GetWorld()->GetTimerManager().SetTimer(ShowLaserTimerHandler, this, &AAstronautPawn::DeactivateLaser, DisplayLaserTime, false);
 
     CometMaster->DestroyComet(TargetedComet);
-	TargetedComet = nullptr;
+    TargetedComet = nullptr;
 
-	Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
+    Cursor->SetColorParameter(FName("CursorColor"), StartingCursorColor);
     Cursor->SetVectorParameter(FName("CursorSize"), FVector(StartingCursorSize));
 
 }
@@ -202,7 +196,7 @@ void AAstronautPawn::HandleChargingProgress(float value)
 {
 
     // Divide by value of charge curve to get correct value for any other curve
-	FLinearColor CurrentCursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition() / LaserChargeTime);
+    FLinearColor CurrentCursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition() / LaserChargeTime);
     Cursor->SetColorParameter(FName("CursorColor"), CurrentCursorColor);
 
     float CurrentCursorSize = CursorSizeCurve->GetFloatValue(ChargingTimeline.GetPlaybackPosition() / LaserChargeTime);
@@ -212,11 +206,11 @@ void AAstronautPawn::HandleChargingProgress(float value)
 
 void AAstronautPawn::HandleChargingFinish()
 {
-	Fire();
+    Fire();
 }
 
 void AAstronautPawn::DeactivateLaser()
 {
-	Laser->DeactivateSystem();
+    Laser->DeactivateSystem();
 }
 
