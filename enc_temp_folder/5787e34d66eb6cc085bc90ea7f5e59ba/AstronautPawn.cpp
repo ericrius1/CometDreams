@@ -142,8 +142,6 @@ void AAstronautPawn::GazeCheck()
 		//CollisionParams)
 		)
 	{
-
-        //GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Gaze collision!!")));
 		if (HitResult.Actor->Tags.Contains("Comet"))
 		{
 			if (!TargetedComet)
