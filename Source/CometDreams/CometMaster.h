@@ -86,7 +86,7 @@ public:
         void IncreaseDifficulty();
 
 
-
+    /* Make sure first element in this array is Red so UI instructions for destroying red comets works correctly */
     UPROPERTY(EditAnywhere, Category = "Comet")
         TArray<FLinearColor> CometColors;
 
@@ -126,8 +126,7 @@ public:
     UPROPERTY(EditAnywhere, Category = "Difficulty")
         float DifficultyIncrementCometSpeed;
 
-    UPROPERTY(EditAnywhere, Category = "State")
-        int NumCometsToZapInSpecificMode;
+
 
 
 };

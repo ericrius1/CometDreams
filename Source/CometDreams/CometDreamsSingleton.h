@@ -20,6 +20,9 @@ public:
     UPROPERTY(BlueprintReadOnly, Category = "Global Events")
     UGlobalEventHandler* GlobalEventHandler;
 
-    UPROPERTY(EditAnywhere, Category = "Come Dreams Singleton")
+    UPROPERTY(EditAnywhere, Category = "Comet Dreams Singleton")
         FString GlobalName;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Game Rules")
+        int NumCometsToZapInSpecificMode;
 };
