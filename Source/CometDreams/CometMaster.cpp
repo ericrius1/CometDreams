@@ -9,7 +9,9 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     Super(OI),
     StartingCometSpeed(10.0f),
     DifficultyIncrementCometSpeed(5.0f),
-    Score(0)
+    Score(0),
+    NumCometsToZapInSpecificMode(3),
+    CurrentCometsZappedInSpecificMode(0)
 {   
     // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
@@ -60,7 +62,6 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
 {
     AComet* CometToCheck = Cast<AComet>(Comet);
     CometToCheck->TakeHit();
-    Score++;
     CometDreamsSingletonInstance->GlobalEventHandler->OnScoreIncrease.Broadcast();
     
 
@@ -73,6 +74,29 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
         CurrentTargetColor = CometColors[ColorIndex];
         UIComet->SetVisibility(true);
         ChangeColorUIComet(CurrentTargetColor);
+        return;
+    }
+
+    if (GameState == EGameState::SpecificComet)
+    {
+        FLinearColor Color;
+        CometToCheck->CometMesh->GetMaterial(0)->GetVectorParameterValue(CometColorParameterName, Color);
+
+        if (Color.Equals(CurrentTargetColor))
+        {
+            // We've hit the right color comet- increase score and current correct zapped comets
+            Score++;
+            CurrentCometsZappedInSpecificMode++;
+            if (CurrentCometsZappedInSpecificMode == NumCometsToZapInSpecificMode)
+            {
+                // We've destroyed all needed comets in specific mode, so now move onto Comet Sequence Mode
+                GameState = EGameState::CometSequence;
+                CometDreamsSingletonInstance->GlobalEventHandler->OnTransitionToSequenceMode.Broadcast();
+            }
+
+        }
+
+        return;
     }
 
 }

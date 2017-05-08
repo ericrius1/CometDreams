@@ -7,6 +7,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateEventDelegate_OnTransitionToCometSpecificMode);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateEventDelegate_OnTransitionToSequenceMode);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateEventDelegate_OnScoreIncrease);
 
@@ -22,6 +23,9 @@ public:
 
     UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events", meta = (DisplayName = "On Transition To Specific Comet Mode"))
         FGameStateEventDelegate_OnTransitionToCometSpecificMode OnTransitionToCometSpecificMode;
+
+    UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events", meta = (DisplayName = "On Transition To Sequence Mode"))
+        FGameStateEventDelegate_OnTransitionToCometSpecificMode OnTransitionToSequenceMode;
 
     UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events", meta = (DisplayName = "On Score Increase"))
         FGameStateEventDelegate_OnScoreIncrease OnScoreIncrease;

@@ -56,6 +56,8 @@ private:
 
     int Score;
 
+    int CurrentCometsZappedInSpecificMode;
+
 
 
 
@@ -123,6 +125,9 @@ public:
 
     UPROPERTY(EditAnywhere, Category = "Difficulty")
         float DifficultyIncrementCometSpeed;
+
+    UPROPERTY(EditAnywhere, Category = "State")
+        int NumCometsToZapInSpecificMode;
 
 
 };
