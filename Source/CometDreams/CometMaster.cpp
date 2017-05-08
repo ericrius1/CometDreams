@@ -77,12 +77,14 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
         return;
     }
 
+    FLinearColor CometColor;
+    CometToCheck->CometMesh->GetMaterial(0)->GetVectorParameterValue(CometColorParameterName, CometColor);
+
     if (GameState == EGameState::SpecificComet)
     {
-        FLinearColor Color;
-        CometToCheck->CometMesh->GetMaterial(0)->GetVectorParameterValue(CometColorParameterName, Color);
 
-        if (Color.Equals(CurrentTargetColor))
+
+        if (CometColor.Equals(CurrentTargetColor))
         {
             // We've hit the right color comet- increase score and current correct zapped comets
             Score++;
@@ -97,6 +99,15 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
         }
 
         return;
+    }
+
+    if (GameState == EGameState::CometSequence)
+    {
+        if (CometColor.Equals(CurrentTargetColor))
+        {
+            
+            Score++;
+        }
     }
 
 }
