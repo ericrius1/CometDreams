@@ -62,7 +62,6 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
 {
     AComet* CometToCheck = Cast<AComet>(Comet);
     CometToCheck->TakeHit();
-    CometDreamsSingletonInstance->GlobalEventHandler->OnScoreIncrease.Broadcast();
     
 
     if (GameState == EGameState::AnyComet)
@@ -74,6 +73,8 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
         CurrentTargetColor = CometColors[ColorIndex];
         UIComet->SetVisibility(true);
         ChangeColorUIComet(CurrentTargetColor);
+        CometDreamsSingletonInstance->GlobalEventHandler->OnScoreIncrease.Broadcast();
+
         return;
     }
 
@@ -88,6 +89,8 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
         {
             // We've hit the right color comet- increase score and current correct zapped comets
             Score++;
+            CometDreamsSingletonInstance->GlobalEventHandler->OnScoreIncrease.Broadcast();
+
             CurrentCometsZappedInSpecificMode++;
             if (CurrentCometsZappedInSpecificMode == NumCometsToZapInSpecificMode)
             {
@@ -105,6 +108,8 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     {
         if (CometColor.Equals(CurrentTargetColor))
         {
+            CometDreamsSingletonInstance->GlobalEventHandler->OnScoreIncrease.Broadcast();
+
             
             Score++;
         }

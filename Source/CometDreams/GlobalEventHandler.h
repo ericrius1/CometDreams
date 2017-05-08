@@ -11,7 +11,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateEventDelegate_OnTransitionToSequenc
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateEventDelegate_OnScoreIncrease);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameStateEventDelegate_OnCorrectHit);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Category = "Global Events" )
 class COMETDREAMS_API UGlobalEventHandler : public UActorComponent
@@ -33,8 +32,6 @@ public:
         FGameStateEventDelegate_OnScoreIncrease OnScoreIncrease;
 
 
-    UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events", meta = (DisplayName = "On Correct Hit"))
-        FGameStateEventDelegate_OnCorrectHit OnCorrectHit;
 
 protected:
 	// Called when the game starts
