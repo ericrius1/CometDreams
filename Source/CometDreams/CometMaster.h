@@ -58,6 +58,10 @@ private:
 
     int CurrentCometsZappedInSpecificMode;
 
+    int CurrentColorIndex;
+
+    int PreviousColorIndex;
+
 
 
 

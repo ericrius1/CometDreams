@@ -130,8 +130,6 @@ void AAstronautPawn::GazeCheck()
     FCollisionQueryParams CollisionParams;
     CollisionParams.TraceTag = TraceTag;
 
-
-
     auto StartLocation = MyCamera->K2_GetComponentLocation();
     auto EndLocation = StartLocation + (MyCamera->GetForwardVector() * TraceRangeForGaze);
     if ( GetWorld()->LineTraceSingleByChannel(

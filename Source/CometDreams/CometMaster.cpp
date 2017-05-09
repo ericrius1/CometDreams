@@ -10,7 +10,9 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     StartingCometSpeed(10.0f),
     DifficultyIncrementCometSpeed(5.0f),
     Score(0),
-    CurrentCometsZappedInSpecificMode(0)
+    CurrentCometsZappedInSpecificMode(0),
+    CurrentColorIndex(-1),
+    PreviousColorIndex(-1)
 {   
     // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
@@ -109,6 +111,15 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
         {
             CometDreamsSingletonInstance->GlobalEventHandler->OnScoreIncrease.Broadcast();
             Score++;
+
+            while (CurrentColorIndex == PreviousColorIndex)
+            {
+                CurrentColorIndex = FMath::Rand() % CometColors.Num();
+            }
+            CurrentTargetColor = CometColors[CurrentColorIndex];
+            UIComet->SetVisibility(true);
+            ChangeColorUIComet(CurrentTargetColor);
+            PreviousColorIndex = CurrentColorIndex;
         }
     }
 
