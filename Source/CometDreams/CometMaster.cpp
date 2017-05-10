@@ -12,7 +12,8 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     Score(0),
     CurrentCometsZappedInSpecificMode(0),
     CurrentColorIndex(-1),
-    PreviousColorIndex(-1)
+    PreviousColorIndex(-1),
+    EasterEggChance(0.6)
 {   
     // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
@@ -128,17 +129,30 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
 
 void UCometMasterComponent::SpawnComet()
 {
-    if (CometBP)
+   
+    if (CometBP && BurgerCometBP)
     {
+        AComet* NewComet;
         FActorSpawnParameters SpawnParams;
         FTransform CometSpawnPoint = GetOwner()->GetTransform();
         CometSpawnPoint.AddToTranslation(FVector(ForwardSpawnDistanceFromPlayer, FMath::RandRange(-25, 25), FMath::RandRange(-25, 25)));
-        AComet* NewComet = GetWorld()->SpawnActor<AComet>(CometBP, CometSpawnPoint, SpawnParams);
-        NewComet->SetSpeed(CurrentCometSpeed);
+        if (EasterEggChance > FMath::FRand())
+        {
+            // Spawn the Easter Egg Mesh instead of the normal comet
+            NewComet = GetWorld()->SpawnActor<AComet>(BurgerCometBP, CometSpawnPoint, SpawnParams);
+        }
+        else
+        {
+            // Spawn the normal comet
+             NewComet = GetWorld()->SpawnActor<AComet>(CometBP, CometSpawnPoint, SpawnParams);
 
-        int ColorIndex = FMath::Rand() % CometColors.Num();
-        NewComet->ChangeMaterial(CometColors[ColorIndex]);
+            int ColorIndex = FMath::Rand() % CometColors.Num();
+            NewComet->ChangeMaterial(CometColors[ColorIndex]);  
+        }
+
+        NewComet->SetSpeed(CurrentCometSpeed);
         GetWorld()->GetTimerManager().SetTimer(CometSpawnerHandle, this, &UCometMasterComponent::SpawnComet, SpawnIntervalTime, true);
+
 
     }
 }

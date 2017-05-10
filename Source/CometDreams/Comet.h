@@ -31,6 +31,7 @@ public:
     UPROPERTY(VisibleAnywhere, Category = "Comet")
         UStaticMeshComponent* CometMesh;
 
+
     UFUNCTION()
         void TakeHit();
 

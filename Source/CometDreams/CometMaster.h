@@ -73,6 +73,10 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
         EGameState GameState = EGameState::AnyComet;
 
+
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        float EasterEggChance;
+
     UFUNCTION()
         void SetupUIComet(UStaticMeshComponent* InUIComet);
 
@@ -101,6 +105,9 @@ public:
     /* Blueprint Reference of Comet Class*/
     UPROPERTY(EditAnywhere, Category = "Comet")
         TSubclassOf<AComet> CometBP;
+
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        TSubclassOf<AComet> BurgerCometBP;  
 
 
 
