@@ -78,6 +78,8 @@ void AAstronautPawn::BeginPlay()
 
     CometMaster->SetupUIComet(UIComet);
 
+    CometMaster->SpawnComet();
+
 }
 // Called every frame
 void AAstronautPawn::Tick(float DeltaTime)
@@ -115,7 +117,6 @@ void AAstronautPawn::IncreaseDifficulty()
 {
 
     CometMaster->IncreaseDifficulty();
-    CometMaster->SpawnComet();
 
     DifficultyLevel++;
 }
