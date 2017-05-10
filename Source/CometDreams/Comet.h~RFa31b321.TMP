@@ -32,7 +32,7 @@ public:
         UStaticMeshComponent* CometMesh;
 
 
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION()
         void TakeHit();
 
 
