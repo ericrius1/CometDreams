@@ -22,10 +22,13 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     CorrectCometAudioComponent = OI.CreateDefaultSubobject<UAudioComponent>(this, TEXT("Correct Comet Audio Component"));
     CorrectCometAudioComponent->SetupAttachment(this);
 
+    SpecificToSequenceModeAudioComponent = OI.CreateDefaultSubobject<UAudioComponent>(this, TEXT("Specific To Sequence Mode Audio Component"));
+    SpecificToSequenceModeAudioComponent->SetupAttachment(this);
 
     AnyToSpecificModeAudioComponent = OI.CreateDefaultSubobject<UAudioComponent>(this, TEXT("Any To Specific Mode Audio Component"));
     AnyToSpecificModeAudioComponent->SetupAttachment(this);
 
+ 
 
 }
 
@@ -39,9 +42,10 @@ void UCometMasterComponent::BeginPlay()
 
 
     CurrentCometSpeed = StartingCometSpeed;
-    CorrectCometAudioComponent->SetSound(CorrectCometCue);
 
-    AnyToSpecificModeAudioComponent->SetSound(AnyToSpecificModeCue);
+    CorrectCometAudioComponent->SetSound(CorrectCometClip);
+    AnyToSpecificModeAudioComponent->SetSound(AnyToSpecificModeClip);
+    SpecificToSequenceModeAudioComponent->SetSound(SpecificToSequenceModeClip);
 
 }
 
@@ -99,17 +103,21 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
         {
             // We've hit the right color comet- increase score and current correct zapped comets
             Score++;
-            CorrectCometAudioComponent->Play();
+           
             CometDreamsSingletonInstance->GlobalEventHandler->OnScoreIncrease.Broadcast();
-
             CurrentCometsZappedInSpecificMode++;
             if (CurrentCometsZappedInSpecificMode == CometDreamsSingletonInstance->NumCometsToZapInSpecificMode)
             {
                 // We've destroyed all needed comets in specific mode, so now move onto Comet Sequence Mode
                 GameState = EGameState::CometSequence;
-                AnyToSpecificModeAudioComponent->Play();
+                SpecificToSequenceModeAudioComponent->Play();
 
                 CometDreamsSingletonInstance->GlobalEventHandler->OnTransitionToSequenceMode.Broadcast();
+            }
+
+            else
+            {
+                CorrectCometAudioComponent->Play();
             }
 
         }
