@@ -69,7 +69,7 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     if (GameState == EGameState::AnyComet)
     {
         GameState = EGameState::SpecificComet;
-     
+        Score++;
         CometDreamsSingletonInstance->GlobalEventHandler->OnTransitionToCometSpecificMode.Broadcast();
         // IMPORTANT: This assumes that the first element in the comet color array is red!!
         CurrentTargetColor = CometColors[0];
