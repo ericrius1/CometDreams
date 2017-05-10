@@ -23,6 +23,10 @@ UCometMasterComponent::UCometMasterComponent(const FObjectInitializer& OI) :
     CorrectCometAudioComponent->SetupAttachment(this);
 
 
+    AnyToSpecificModeAudioComponent = OI.CreateDefaultSubobject<UAudioComponent>(this, TEXT("Any To Specific Mode Audio Component"));
+    AnyToSpecificModeAudioComponent->SetupAttachment(this);
+
+
 }
 
 
@@ -35,7 +39,9 @@ void UCometMasterComponent::BeginPlay()
 
 
     CurrentCometSpeed = StartingCometSpeed;
-    CorrectCometAudioComponent->SetSound(CorrectCometSound);
+    CorrectCometAudioComponent->SetSound(CorrectCometCue);
+
+    AnyToSpecificModeAudioComponent->SetSound(AnyToSpecificModeCue);
 
 }
 
@@ -70,7 +76,8 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
     {
         GameState = EGameState::SpecificComet;
         Score++;
-        CorrectCometAudioComponent->Play();
+        AnyToSpecificModeAudioComponent->Play();
+        
         CometDreamsSingletonInstance->GlobalEventHandler->OnTransitionToCometSpecificMode.Broadcast();
         // IMPORTANT: This assumes that the first element in the comet color array is red!!
         CurrentTargetColor = CometColors[0];
@@ -100,6 +107,8 @@ void UCometMasterComponent::DestroyComet(AActor* Comet)
             {
                 // We've destroyed all needed comets in specific mode, so now move onto Comet Sequence Mode
                 GameState = EGameState::CometSequence;
+                AnyToSpecificModeAudioComponent->Play();
+
                 CometDreamsSingletonInstance->GlobalEventHandler->OnTransitionToSequenceMode.Broadcast();
             }
 

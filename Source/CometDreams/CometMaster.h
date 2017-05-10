@@ -122,14 +122,16 @@ public:
         float TimeBetweenRounds = 3.0f;
 
     UPROPERTY(EditAnywhere, Category = "Comet")
-        USoundCue* CorrectCometSound;
-
-    UPROPERTY(EditAnywhere, Category = "Comet")
-        USoundCue* RoundCompleteSound;
+        USoundCue* CorrectCometCue;
 
     UPROPERTY(EditAnywhere, Category = "Comet")
         UAudioComponent* CorrectCometAudioComponent;
 
+    UPROPERTY(EditAnywhere, Category = "State")
+        USoundCue* AnyToSpecificModeCue;
+
+    UPROPERTY(EditAnywhere, Category = "Comet")
+        UAudioComponent* AnyToSpecificModeAudioComponent;
 
     UPROPERTY(EditAnywhere, Category = "Difficulty")
         float StartingCometSpeed;
