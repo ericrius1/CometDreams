@@ -52,7 +52,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		UAudioComponent*  LaserChargeSound;
 
-    UPROPERTY(EditAnywhere, Category = "Firing")
+    UPROPERTY(VisibleAnywhere, Category = "Firing")
         UStaticMeshComponent*  UIComet;
 
 

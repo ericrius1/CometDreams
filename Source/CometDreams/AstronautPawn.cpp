@@ -40,6 +40,7 @@ AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
     UIComet = CreateDefaultSubobject< UStaticMeshComponent>(TEXT("UI Comet"));
     UIComet->AttachToComponent(CometMaster, FAttachmentTransformRules::KeepRelativeTransform);
 
+
 }
 
 // Called when the game starts or when spawned
