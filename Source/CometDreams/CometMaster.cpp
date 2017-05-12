@@ -156,7 +156,7 @@ void UCometMasterComponent::SpawnComet()
         FActorSpawnParameters SpawnParams;
         FTransform CometSpawnPoint = GetOwner()->GetTransform();
         CometSpawnPoint.AddToTranslation(FVector(ForwardSpawnDistanceFromPlayer, FMath::RandRange(-25, 25), FMath::RandRange(-25, 25)));
-        if (EasterEggChance > FMath::FRand() && GameState !=EGameState::AnyComet)
+        if (EasterEggChance > FMath::FRand() && ( GameState !=EGameState::AnyComet || GameState!=EGameState::SpecificComet)
         {
             // Spawn the Easter Egg Mesh instead of the normal comet
             NewComet = GetWorld()->SpawnActor<AComet>(BurgerCometBP, CometSpawnPoint, SpawnParams);
