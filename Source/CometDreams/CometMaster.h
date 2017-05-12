@@ -122,7 +122,7 @@ public:
         float TimeBetweenRounds = 3.0f;
 
 
-        UAudioComponent* CorrectCometAudioComponent;
+    UAudioComponent* CorrectCometAudioComponent;
 
 
     UPROPERTY(EditAnywhere, Category = "State")
