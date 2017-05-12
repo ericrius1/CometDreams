@@ -97,7 +97,7 @@ void AAstronautPawn::Tick(float DeltaTime)
         UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition(0, EOrientPositionSelector::OrientationAndPosition);
     }
 
-    GazeCheck();
+   // GazeCheck();
 
     ChargingTimeline.TickTimeline(DeltaTime);
 
@@ -132,14 +132,31 @@ void AAstronautPawn::GazeCheck()
     FCollisionQueryParams CollisionParams;
     CollisionParams.TraceTag = TraceTag;
 
-    auto StartLocation = MyCamera->K2_GetComponentLocation();
+    FRotator Orientation;
+    FVector StartLocation;
+    FVector EndLocation;
     
-    auto EndLocation = StartLocation + (MyCamera->GetForwardVector() * TraceRangeForGaze);
+ /*   if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
+    {
+        UHeadMountedDisplayFunctionLibrary::GetOrientationAndPosition(Orientation, StartLocation);
+        EndLocation = StartLocation + (Orientation.Vector() * TraceRangeForGaze);
+
+
+    }*/
+
+    //else 
+    //{
+        StartLocation = MyCamera->K2_GetComponentLocation();
+        EndLocation = StartLocation + (MyCamera->GetForwardVector() * TraceRangeForGaze);
+    //}
+
+
+    
     if ( GetWorld()->LineTraceSingleByChannel(
         HitResult,
         StartLocation,
         EndLocation,
-        ECollisionChannel::ECC_Visibility) && HitResult.Actor->Tags.Contains("Comet"))
+        ECollisionChannel::ECC_Visibility, CollisionParams) && HitResult.Actor->Tags.Contains("Comet"))
     {
         //GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Gaze collision!!")));
 
