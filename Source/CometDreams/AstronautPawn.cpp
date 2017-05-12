@@ -174,7 +174,6 @@ void AAstronautPawn::GazeCheck()
 
 void AAstronautPawn::Fire()
 {
-    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Fire Laser!!"));
     bLockedOntoComet = false;
 
     Laser->ActivateSystem();
