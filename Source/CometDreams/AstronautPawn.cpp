@@ -12,7 +12,8 @@ AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
     bLockedOntoComet(false),
     TraceRangeForGaze(500),
     DisplayLaserTime(0.5),
-    MovementSpeed(1)
+    MovementSpeed(1),
+    LaserChargeTimeDecreaseOnCometSpeedIncrease(0.2f)
 {
     // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
@@ -68,7 +69,7 @@ void AAstronautPawn::BeginPlay()
     FinishFunction.BindUFunction(this, FName("HandleChargingFinish"));
 
     ChargingTimeline.AddInterpFloat(ChargeCurve, ProgressFunction);
-
+    ChargingTimeline.SetPlayRate(1/LaserChargeTime);
     ChargingTimeline.SetTimelineFinishedFunc(FinishFunction);
 
     StartingCursorColor = CursorColorCurve->GetLinearColorValue(0.0);
@@ -116,10 +117,10 @@ void AAstronautPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AAstronautPawn::IncreaseDifficulty()
 {
-
+    LaserChargeTime -= LaserChargeTimeDecreaseOnCometSpeedIncrease;
+    ChargingTimeline.SetPlayRate(1 / LaserChargeTime);
     CometMaster->IncreaseDifficulty();
 
-    DifficultyLevel++;
 }
 
 void AAstronautPawn::GazeCheck()
@@ -212,11 +213,10 @@ void AAstronautPawn::Fire()
 void AAstronautPawn::HandleChargingProgress(float value)
 {
 
-    // Divide by value of charge curve to get correct value for any other curve
-    FLinearColor CurrentCursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition() / LaserChargeTime);
+    FLinearColor CurrentCursorColor = CursorColorCurve->GetLinearColorValue(ChargingTimeline.GetPlaybackPosition());
     Cursor->SetColorParameter(FName("CursorColor"), CurrentCursorColor);
 
-    float CurrentCursorSize = CursorSizeCurve->GetFloatValue(ChargingTimeline.GetPlaybackPosition() / LaserChargeTime);
+    float CurrentCursorSize = CursorSizeCurve->GetFloatValue(ChargingTimeline.GetPlaybackPosition());
     Cursor->SetVectorParameter(FName("CursorSize"), FVector(CurrentCursorSize));
 
 }

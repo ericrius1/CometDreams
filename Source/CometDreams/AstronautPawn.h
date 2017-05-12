@@ -69,14 +69,15 @@ protected:
 		float MovementSpeed;
 
 
-    // Let user set variable charge time and just make sure to update this in charge curve when this changes,
-    // then just divide by that value
+  
     /* Time laser takes to charge and fire. Make sure this value is equal to the time of the Charge Curve. This won't 
     actually change charge time- it's just used to coordinate with other curves like cursor color and size change as laser charges*/
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
         float LaserChargeTime = 2.0f;
 
 
+    UPROPERTY(EditAnywhere, Category = "Firing")
+        float LaserChargeTimeDecreaseOnCometSpeedIncrease;
 
 
 
@@ -134,12 +135,5 @@ private:
     float PreviousTime;
 
     int PauseTimeNeededToTriggerHMDReset = 2.0f;
-
-    // 0 Difficulty means game hasn't started yet
-    int DifficultyLevel = 0;
-
-
-
-
 
 };
