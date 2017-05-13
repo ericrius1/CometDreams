@@ -13,7 +13,8 @@ AAstronautPawn::AAstronautPawn(const FObjectInitializer& OI) :
     TraceRangeForGaze(500),
     DisplayLaserTime(0.5),
     MovementSpeed(1),
-    LaserChargeTimeDecreaseOnCometSpeedIncrease(0.2f)
+    LaserChargeTimeDecreaseOnCometSpeedIncrease(0.2f),
+    SphereTraceRadius(5.0f)
 {
     // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
@@ -152,12 +153,17 @@ void AAstronautPawn::GazeCheck()
     //}
 
 
+
+        FCollisionShape CollisionShape;
+        CollisionShape.ShapeType = ECollisionShape::Sphere;
+        CollisionShape.SetSphere(SphereTraceRadius);
     
-    if ( GetWorld()->LineTraceSingleByChannel(
+    if ( GetWorld()->SweepSingleByChannel(
         HitResult,
         StartLocation,
         EndLocation,
-        ECollisionChannel::ECC_Visibility) && HitResult.Actor->Tags.Contains("Comet"))
+        FQuat::FQuat(),
+        ECollisionChannel::ECC_PhysicsBody, CollisionShape) && HitResult.Actor->Tags.Contains("Comet"))
     {
         //GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, FString::Printf(TEXT("Gaze collision!!")));
 

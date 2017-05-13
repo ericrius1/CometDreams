@@ -65,6 +65,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Firing")
 		UParticleSystemComponent* Cursor;
 
+
+    UPROPERTY(EditAnywhere, Category = "Firing")
+        float SphereTraceRadius;
+
+
+
 	UPROPERTY(EditAnywhere, Category = "Movement")
 		float MovementSpeed;
 
